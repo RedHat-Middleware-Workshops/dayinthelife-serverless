@@ -1,0 +1,476 @@
+// Attributes
+:walkthrough: Knative Serving + Camel K
+:title: Lab 1 - {walkthrough}
+:user-password: openshift
+:standard-fail-text: Verify that you followed all the steps. If you continue to have issues, contact a workshop assistant.
+:namespace: {user-username}
+
+// URLs
+:next-lab-url: https://tutorial-web-app-webapp.{openshift-app-host}/tutorial/dayinthelife-streaming.git-labs-02-/
+:codeready-url: http://codeready-crw.{openshift-app-host}/
+
+ifdef::env-github[]
+:next-lab-url: ../02-xxx/walkthrough.adoc
+endif::[]
+
+[id='knative-serving-camel-k']
+= {title}
+
+XXXXXXXX TBD
+
+*Audience:* Enterprise Integrators, System Architects, Developers, API Designers, Data Integrators
+
+*Overview*
+
+XXXXXXXX TBD
+
+image::images/lab1-overview.png[Overview, role="integr8ly-img-responsive"]
+
+Red Hat Integration includes an integration Platform-as-a-Service (iPaaS) solution that makes it easy for business users to collaborate with integration experts and application developers. It is a full toolchain and runtime, available right from your browser. You will use this tool to design and implement a new API service and to connect with the Event bus provided by AMQ Online.
+
+*Why Red Hat?*
+
+The Red Hat portfolio of middleware products helps you create a unified environment for application development, delivery, integration, and automation. It is comprised of comprehensive frameworks, integration solutions, process automation, runtimes, and programming languages.
+
+To respond to business demands quickly and efficiently, you need a way to integrate applications and data spread across your enterprise. Red Hat AMQ —based on open source communities like Apache ActiveMQ and Apache Kafka— is a flexible messaging platform that delivers information reliably, enabling real-time integration and connecting the Internet of Things (IoT).
+
+AMQ Online is a solution (Operator) to manage multiple components to provide the overall functionality of running self-service (Messaging as a Service) messaging platform on OpenShift. With AMQ online, developers can provision messaging when and where they need it through a browser console. The AMQ online component is built on the foundation of Red Hat OpenShift, a container platform for high scalability and availability of cloud-native applications.
+
+*Credentials*
+
+Use the following credentials to login into the web consoles:
+
+* Your *username* is: `{user-username}`
+* Your *password* is: `{user-password}`
+
+[type=walkthroughResource,serviceName=codeready]
+.Red Hat CodeReady Workspaces
+****
+* link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
+****
+[type=walkthroughResource]
+.Red Hat OpenShift Developer Console
+****
+* link:{openshift-host}/topology/ns/{namespace}[Topology View, window="_blank"]
+****
+
+:sectnums:
+
+[time=5]
+[id="Getting Ready"]
+== Getting ready for the labs
+
+[IMPORTANT]
+====
+Please complete the following instructions to get ready for this lab. *If this is not the first lab you are doing today, and you have already completed this step in any of the previous labs, please skip to next task*.
+====
+
+
+One of the main features of Knative is automatic scaling of replicas for an application to closely match incoming demand, including scaling applications to zero if no traffic is being received. The Autoscaler component watches traffic flow to the application, and scales replicas up or down based on configured metrics.
+
+
+=== Start CodeReady workspace
+
+. Once you have logged in and authorized access to your user account, you will land in your personal CodeReady dashboard.
++
+--
+A new workspace has been configured with the required tools, plugins and project to start working on this workshop.
+
+Click on the workspace with the name starting with `dil-serverless-` on the left menu bar under *RECENT WORKSPACES*.
+
+image::images/codeready-dashboard.png[CodeReady Dashboard, role="integr8ly-img-responsive"]
+
+[NOTE]
+====
+You can also click on the name of the workspace in the center, and then click on the green button that says _Open_ on the top right hand side of the screen.
+====
+--
+
+. This will start an instance of the workspace. Please wait a few moments while it downloads the required container images and configuration setup.
++
+image::images/codeready-loading.png[Loading CodeReady, role="integr8ly-img-responsive"]
+
+. The first time it's run, it will git clone the required projects for this workshop. After a minute or two, you’ll be placed in the workspace. Close the initial welcome and Readme tabs then click on the Explorer button on the left side bar.
++
+image::images/codeready-welcome.png[CodeReady Welcome screen, role="integr8ly-img-responsive"]
++
+[NOTE]
+====
+This IDE is based on *Code Ready*, which is in turn is based on Microsoft VS Code editor. It will look familiar if you have already used it.
+
+You can close the _Problems_ and _Output_ views to clear space.
+====
+
+. The projects explorer will show you the *dil-serverless* folder with the required projects. Expand the folders to reveal the projects we cloned from the git repository.
++
+image::images/codeready-projects.png[Workshop projects, role="integr8ly-img-responsive"]
+
+. During the workshop we will need to introduce commands for both the OpenShift and other Command Line Interfaces (CLI) tools. For that we will need to start a terminal window _inside_ one of the containers from the developer workspace. To open the terminal window, click on the _My Workspace_ button on the right side panel and expand the **User Runtimes/tools** folder. Click on *>_ New terminal*.
++
+image::images/codeready-new-terminal.png[Open Terminal, role="integr8ly-img-responsive"]
+
+. This will deploy the terminal window in the bottom of the screen. This terminal is attached to the running CodeReady container and is also running on OpenShift. This is the place where you will issue most of the commands from this workshop.
++
+image::images/codeready-terminal.png[CodeReady Terminal, role="integr8ly-img-responsive"]
+
+=== Login into the OpenShift cluster
+
+. Finally, you will need to login into the OpenShift CLI to start interacting with the platform. For login, issue the following command:
++
+[source,bash,subs="attributes+"]
+----
+oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true
+----
+
+. You should see something like the following (the project names may be different):
++
+----
+Login successful.
+
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+  * {namespace}
+    {namespace}-codeready
+    {namespace}-dayinthel-0605
+
+Using project "{user-username}".
+Welcome! See 'oc help' to get started.
+----
+
+. Most of the work will be deploy to your own `{namespace}` project namespace, so be sure to have it as a _working_ project by executing the following command:
++
+[source,bash,subs="attributes+"]
+----
+oc project {namespace}
+----
+
+. Now you are ready to start working on the application services.
+
+
+[time=10]
+[id="Serving with API"]
+== Knative Serving, Camel K & API
+
+
+
+We are ready to go over the application to validate the previous statements. We will order some different flavors by calling our RESTful backend services, plus check how the application behaves in case of failure.
+
+=== Creating the API
+
+Create the API
+Take a look at the API
+
+. title: Meter API
+. Path /meter/status
+
+. Setup the schema, with name *meterstatus*
+
+[source,json,role="copypaste"]
+----
+      {
+        "key": "F6PeB2XQRYG-8EN5yFcrP",
+        "value": {"meterId":"F6PeB2XQRYG-8EN5yFcrP","timestamp":'$TIMESTAMP',"status":"unknown"}
+      }
+----
+
+. *200* OK status update 
+
+* _operationId_: create
+* _summary_: update meter status
+* _description_: update meter status
+* _content_: application/json
+
+
+. Export the API using *yaml*
+. Copy & Paste the content from the downloaded file into *openapi-spec.yaml*
+
+ Camel K makes running serverless easy. 
+
+. Go back to the CodeReady Workspaces IDE 
+. API to DB, Find MeterConsumer.java 
+. Paste following code in the //PASTE HERE
+
+[source,java,role="copypaste"]
+----
+        from("direct:create").routeId("MetersFromAPI")
+            .throttle(3).timePeriodMillis(20000)
+            .unmarshal().json()
+            .setHeader("meterId",simple("${body.[value][meterId]}"))
+            .setHeader("status",simple("${body.[value][status]}"))
+            .setBody(simple("INSERT INTO meter_update(meter_id, timestamp, status_text) VALUES ('${headers.meterId}', to_timestamp(${body.[value][timestamp]}), '${headers.status}');"))
+            .log("SQL INSERT statement: ${body}")
+            .to("jdbc:dataSource")
+----
+
+. View the _meter.properties_ and create it by running
+[source,bash,role="copypaste"]
+----
+oc create configmap amqp-properties --from-file $CHE_PROJECTS_ROOT/dil-serverless/lab-01/meters.properties -n {namespace}
+----
+
+
+. Start up the API as a serverless function by running in the terminal
+[source,bash,role="copypaste"]
+----
+oc project {namespace}
+
+kamel run MeterConsumer.java 
+
+oc patch -n user1 ksvc/events -p '{ "metadata" : { "annotations" : { "app.openshift.io/connects-to" : "iot-psql" } }'
+
+----
+
+. Go to OpenShift Developer Topology, see the meter-consumer starts up. 
+. In the CodeReady terminal, send a request to make sure everything works correctly
+[source,bash,role="copypaste"]
+----
+TIMESTAMP=`date +%s`
+curl -X POST \
+http://meter-consumer-user1.apps.cluster-3bc2.3bc2.example.opentlc.com/meter/status \
+-H 'content-type: application/json' \
+-d '
+     {
+        "key": "F6PeB2XQRYG-8EN5yFcrP",
+        "value": {"meterId":"F6PeB2XQRYG-8EN5yFcrP","timestamp":'$TIMESTAMP',"status":"unknown"}
+      }
+'
+----
+
+. View the inserted result, from the database
+[source,bash,role="copypaste"]
+----
+oc exec $(oc get pods -o custom-columns=POD:.metadata.name --no-headers -l app=iot-psql) -- bash -c 'psql -d $POSTGRES_DB -U $POSTGRES_USER -c "select * from meter_update;"'
+----
+
+. Wait for couple of minutes, go back to OpenShift Developer Topology and see pod now scale downs to ZERO
+
+. In the CodeReady terminal, send another request, and see the pod comes back up again
+[source,bash,role="copypaste"]
+----
+TIMESTAMP=`date +%s`
+curl -X POST \
+http://meter-consumer-user1.apps.cluster-3bc2.3bc2.example.opentlc.com/meter/status \
+-H 'content-type: application/json' \
+-d '
+     {
+        "key": "F6PeB2XQRYG-8EN5yFcrP",
+        "value": {"meterId":"F6PeB2XQRYG-8EN5yFcrP","timestamp":'$TIMESTAMP',"status":"unknown"}
+      }
+'
+----
+
+[type=verification]
+Were you able to successfully scale-down and scale-up your application?
+
+[type=verificationFail]
+{standard-fail-text}
+
+
+[time=20]
+== Setup a Kafka Cluster and Topics
+
+The OpenShift 4 cluster that this lab is being run on has had the *Red Hat Integration - AMQ Streams* operator pre-installed. You'll be using the link:{https://docs.openshift.com/container-platform/4.5/operators/crds/crd-extending-api-with-crds.html#crd-creating-custom-resources-from-file_crd-extending-api-with-crds}[Custom Resources, window="_blank"] provided by the operator to create a Kafka Cluster. Documentation for AMQ Streams on OpenShift can be found at link:{https://access.redhat.com/documentation/en-us/red_hat_amq/7.7/html-single/using_amq_streams_on_openshift/index}[this link, window="_blank"].
+
+=== Create the Kafka Cluster 
+A Kafka Cluster is created by providing OpenShift with an instance of a *Kafka* link:{https://docs.openshift.com/container-platform/4.5/operators/crds/crd-extending-api-with-crds.html#crd-creating-custom-resources-from-file_crd-extending-api-with-crds}[Custom Resource, window="_blank"] via the `oc apply` command, or via the OpenShift Developer Catalog UI. The AMQ Streams operator will create the Kafka Cluster based on the parameters specified in the CR.
+
+[NOTE]
+====
+Throughout this workshop you'll need to copy block of code. Make sure you expand these using the arrow (`>`) to preserve formatting and copy the entire block.
+====
+
+. Open the OpenShift Developer Console link:{user-topology-url}[Topology View, window="_blank"].
+. Click *+Add* on the left menu.
+. Click on the *From Catalog* option.
+. Type in `kafka` in the search text field. You should see a list of Kafka resources that are provided by the operator.
++
+image:images/screenshots/09-kafka-add-resources.png[Available Operator Backed Kafka Resources]
+. Click on the *Kafka* item, review the details, then click the *Create* button.
+. If the *Form View* is displayed, change to the the *YAML View*. It should look similar to this screenshot:
++
+image:images/screenshots/23-kafka-yaml-view.png[Kafka Add Resources YAML View]
+. Replace the contents of the _YAML_ editor with the following code:
++
+[source,yaml,subs="attributes+"]
+----
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: iot-cluster
+spec:
+  kafka:
+    version: 2.5.0
+    replicas: 3
+    listeners:
+      plain: {}
+      tls: {}
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      log.message.format.version: '2.5'
+    storage:
+      type: ephemeral
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+----
+. Click the *Create* button to create a `Kafka` Custom Resource to define your cluster. You should be returned to the link:{user-topology-url}[Topology View, window="_blank"] automatically.
+
+{blank}
+
+After a few moments the Kafka Cluster will be displayed. It is represented in the Topology View as an application group named *strimzi-iot-cluster*.
+
+image:images/screenshots/04-topology-with-kafka-cluster.png[Topology View with Kafka Cluster]
+
+=== Create a Topic for Meter Updates
+
+. Open the OpenShift Developer Console link:{user-topology-url}[Topology View, window="_blank"].
+. Click *+Add* on the left menu.
+. Click on the *From Catalog* option.
+. Type in `kafka` in the search text field and then click on *Kafka Topic*.
+. Click the *Create* button.
+. Create a `Kafka Topic` Custom Resource to define your connector. Change to the the *YAML View*. Replace the contents of the _YAML_ editor with the following code:
++
+[source,yaml,subs="attributes+"]
+----
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: hydrated-meter-events
+  labels:
+    strimzi.io/cluster: iot-cluster
+spec:
+  partitions: 10
+  replicas: 1
+  config:
+    retention.ms: 604800000
+    segment.bytes: 1073741824
+----
+. Click the *Create* button.
+
+{blank}
+
+The AMQ Streams operator will automatically create the Topic in the Kafka Cluster shortly after you submit the CR YAML.
+
+
+
+=== API to Eventing
+
+. In CodeReady add the following code to the end of route, 
+
+[source,java,subs="attributes+"]
+----
+    .setBody(simple("SELECT address, id as meter_id, '${headers.status}' as status_text , latitude, longitude FROM meter where id = '${headers.meterId}' ;"))
+    .log("SQL SELECT statement: ${body}")
+    .to("jdbc:dataSource")
+    .marshal().json()
+    .to("kafka:{{consumer.topic}}?brokers={{kafka.host}}:{{kafka.port}}")
+----
+so it would look like this, 
+[source,java,subs="attributes+"]
+----
+    from("direct:create").routeId("MetersFromAPI")
+            .throttle(3).timePeriodMillis(20000)
+            .unmarshal().json()
+            .setHeader("meterId",simple("${body.[value][meterId]}"))
+            .setHeader("status",simple("${body.[value][status]}"))
+            .setBody(simple("INSERT INTO meter_update(meter_id, timestamp, status_text) VALUES ('${headers.meterId}', to_timestamp(${body.[value][timestamp]}), '${headers.status}');"))
+        .log("SQL INSERT statement: ${body}")
+            .to("jdbc:dataSource")
+            .setBody(simple("SELECT address, id as meter_id, '${headers.status}' as status_text , latitude, longitude FROM meter where id = '${headers.meterId}' ;"))
+        .log("SQL SELECT statement: ${body}")
+            .to("jdbc:dataSource")
+            .marshal().json()
+        .to("kafka:{{consumer.topic}}?brokers={{kafka.host}}:{{kafka.port}}")
+    ;
+----
+
+. Check revision was added. 
+
+. In the CodeReady terminal, send a request to make sure everything works correctly
+[source,bash,role="copypaste"]
+----
+TIMESTAMP=`date +%s`
+curl -X POST \
+http://meter-consumer-user1.apps.cluster-3bc2.3bc2.example.opentlc.com/meter/status \
+-H 'content-type: application/json' \
+-d '
+     {
+        "key": "F6PeB2XQRYG-8EN5yFcrP",
+        "value": {"meterId":"F6PeB2XQRYG-8EN5yFcrP","timestamp":'$TIMESTAMP',"status":"unknown"}
+      }
+'
+----
+
+. Verify data was sent to the topic. 
+
+
+[type=verification]
+Did you receive a JSON response from the Kafka HTTP Bridge that is similar to the provided example?
+
+[type=verificationFail]
+{standard-fail-text}
+
+
+[time=10]
+[id="Scaling up"]
+== Scaling up with Serving
+
+
+
+=== Starting the function with scaling options
+
+ Knative Pod Autoscaler (KPA)
+* Part of the Knative Serving core and enabled by default once Knative Serving is installed.
+* Does not support CPU-based autoscaling.
+
+ Horizontal Pod Autoscaler (HPA)
+* Not part of the Knative Serving core, and must be enabled after Knative Serving installation.
+* Does not support scale to zero functionality.
+* Supports CPU-based autoscaling.
+
+
+. In CodeReady, let run the Meter Consumer again with the new scaling setting using Camel K traits. It configure options when running the integration as Knative service.
+
+[source,bash,role="copypaste"]
+----
+kamel run MeterConsumer.java -t knative-service.min-scale=0 -t knative-service.max-scale=5 -t knative-service.autoscaling-metric=concurrency -t knative-service.autoscaling-class=kpa.autoscaling.knative.dev -t knative-service.autoscaling-target=70 
+----
+
+. Let's run the application with larger traffics
+[source,bash,role="copypaste"]
+----
+kamel run Sender.java
+----
+
+. Go back to OpenShift Developer Console, and see if the pods has scaled up in order to serve the demands.
+
+
+. Go to the UI and view the updated result.
+
+[type=verification]
+Did it scale up?
+
+[type=verificationFail]
+{standard-fail-text}
+
+
+[time=5]
+[id="summary"]
+== Summary
+
+In this lab you successfully xxxx
+You can now proceed to link:{next-lab-url}[Lab 2].
+
+[time=4]
+[id="further-reading"]
+== Notes and Further Reading
+
+* xxxx
+* xxxx
+* xxxx
