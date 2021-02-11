@@ -35,19 +35,38 @@
     name: knative-serving
     state: present
 
-- name: Evaluate Serverless Subscription
+- name: Evaluate Knative Serving
   k8s:
     state: present
     resource_definition: "{{ lookup('template', 'serverless_knative_serving.yaml.j2') }}"
 
-- name: Evaluate knative-eventing namespace if not exists 
-  k8s:
-    api_version: v1
-    kind: Namespace
-    name: knative-eventing
-    state: present
-
-- name: Evaluate Serverless Subscription
-  k8s:
-    state: present
-    resource_definition: "{{ lookup('template', 'serverless_knative_eventing.yaml.j2') }}"
+- name: Knative Eventing
+  block:
+    - name: Evaluate knative-eventing namespace if not exists 
+      k8s:
+        api_version: v1
+        kind: Namespace
+        name: knative-eventing
+        state: present
+    - name: Evaluate Knative Eventing
+      k8s:
+        state: present
+        resource_definition: "{{ lookup('template', 'serverless_knative_eventing.yaml.j2') }}"
+    - name: Evaluate kafka namespace if not exists 
+      k8s:
+        api_version: v1
+        kind: Namespace
+        name: '{{shared_kafka_project}}'
+        state: present
+    - name: Create Kafka Cluster for Serverless
+      k8s:
+        state: present
+        namespace: '{{shared_kafka_project}}'
+        resource_definition: "{{ lookup('template', 'kafka-serverless.yaml.j2') }}"
+    - name: Evaluate Knative Kafka
+      k8s:
+        state: present
+        resource_definition: "{{ lookup('template', 'serverless-knative-kafka.yaml.j2') }}"
+  when: 
+    - ocp4_workload_dil_serverless_workshop_install_eventing is defined
+    - ocp4_workload_dil_serverless_workshop_install_eventing | bool == true
