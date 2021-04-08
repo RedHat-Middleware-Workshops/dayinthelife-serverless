@@ -7,7 +7,7 @@
 
 // URLs
 :next-lab-url: https://tutorial-web-app-webapp.{openshift-app-host}/tutorial/dayinthelife-streaming.git-labs-02-/
-:codeready-url: http://codeready-crw.{openshift-app-host}/
+:codeready-url: http://codeready-codeready.{openshift-app-host}/
 
 ifdef::env-github[]
 :next-lab-url: ../02-xxx/walkthrough.adoc
