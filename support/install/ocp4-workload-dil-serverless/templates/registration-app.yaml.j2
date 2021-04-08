@@ -136,7 +136,7 @@ items:
           - name: LAB_REDIS_HOST
             value: redis
           - name: LAB_MODULE_URLS
-            value: 'https://tutorial-web-app-webapp.{{ route_subdomain }};Instructions'
+            value: "https://{{ webapp_secure_route | default('https://www.redhat.com', true) }};Instructions"
           - name: LAB_REDIS_PASS
             valueFrom:
               secretKeyRef:
