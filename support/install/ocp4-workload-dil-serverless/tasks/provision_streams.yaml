@@ -12,6 +12,8 @@
     kind: OperatorGroup
     name: workshop-operators
     namespace: '{{ operators_project }}'
+  when: 
+  - operators_project != "openshift-operators"
 
 - name: Evaluate Streams Subscription
   k8s:
@@ -25,5 +27,5 @@
     name: kafkas.kafka.strimzi.io
   register: crd_streams
   until: crd_streams.resources | list | length == 1
-  retries: 10
-  delay: 30
+  retries: 90
+  delay: 10

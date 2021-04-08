@@ -7,10 +7,10 @@
     state: present
 
 - debug: 
-    var: '{{ocp4_workload_dil_serverless_num_supported_users|int}}'
+    var: '{{num_supported_users|int}}'
 
 - name: Evaluate app instance
   k8s:
     state: present
     namespace: '{{ registration_namespace }}'
-    resource_definition: "{{ lookup('template', 'user_registration.yaml.j2') }}"
+    resource_definition: "{{ lookup('template', 'registration-app.yaml.j2') }}"

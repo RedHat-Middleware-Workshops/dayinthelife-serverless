@@ -25,8 +25,8 @@
     name: knativeservings.operator.knative.dev
   register: crd_knativeservings
   until: crd_knativeservings.resources | list | length == 1
-  retries: 10
-  delay: 30
+  retries: 90
+  delay: 10
 
 - name: Evaluate knative-serving namespace if not exists 
   k8s:
@@ -38,7 +38,7 @@
 - name: Evaluate Knative Serving
   k8s:
     state: present
-    resource_definition: "{{ lookup('template', 'serverless_knative_serving.yaml.j2') }}"
+    resource_definition: "{{ lookup('template', 'serverless-knative-serving.yaml.j2') }}"
 
 - name: Knative Eventing
   block:
@@ -51,7 +51,7 @@
     - name: Evaluate Knative Eventing
       k8s:
         state: present
-        resource_definition: "{{ lookup('template', 'serverless_knative_eventing.yaml.j2') }}"
+        resource_definition: "{{ lookup('template', 'serverless-knative-eventing.yaml.j2') }}"
     - name: Evaluate kafka namespace if not exists 
       k8s:
         api_version: v1
