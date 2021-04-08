@@ -1,5 +1,4 @@
 ---
-
 - name: Evaluate {{ che_project }} namespace if not exists 
   k8s:
     api_version: v1
@@ -7,24 +6,6 @@
     name: '{{ che_project }}'
     state: present
 
-# RHPDS sepecific
-- name: Delete the core limit range in  {{ che_project }} from RHPDS setting
-  k8s:
-    api_version: v1
-    kind: LimitRange
-    name: '{{ che_project }}-core-resource-limits'
-    namespace: '{{ che_project }}'
-    state: absent
-    
-- name: Define snapshot_operator_project
-  set_fact: 
-    snapshot_operator_project: '{{ che_project }}'
-    
-- name: Evaluate CatalogSource for Operator Snapshot {{ snapshot_operator_project }}
-  k8s:
-    state: present
-    resource_definition: "{{ lookup('template', 'snapshot-catalogsource.yaml.j2') }}"    
-    
 - name: Evaluate Code Ready Operator Group
   k8s:
     state: present
@@ -34,14 +15,6 @@
   k8s:
     state: present
     resource_definition: "{{ lookup('template', 'crw-subscription.yaml.j2') }}"
-    
-- name: Evaluate CatalogSource for Operator Snapshot
-  include_tasks: approves_installplan.yaml
-  vars:
-    working_workspaces_namespace: "{{ che_project }}"
-    working_csv_name: "crwoperator"
-    working_subscription_name: "codeready-workspaces"
-    
 
 - name: Wait for Code Ready operator to install
   k8s_facts:
@@ -67,7 +40,6 @@
   retries: 90
   delay: 30
 
-
 - name: Extract key_cloak_admin_password
   k8s_facts: 
     kind: Secret
@@ -75,10 +47,8 @@
     namespace: '{{ che_project }}'
   register: key_cloak_result
 
-
 - set_fact:
     key_cloak_admin_password: "{{ key_cloak_result.resources[0].data.password | b64decode }}"
-
 
 - name: Get Admin Token from Keycloack
   uri:
@@ -133,6 +103,8 @@
 
 - name: Add users and create workspaces
   include_tasks: user_workspace.yaml
-  with_sequence: start=1 end={{ num_users }} 
-  when:
-    - num_users|int > 0
+  loop: "{{ users }}"
+  loop_control:
+    loop_var: __user_n
+  vars:
+    __user: "{{ __user_n }}"

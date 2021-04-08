@@ -1,18 +1,18 @@
 ---
 - name: Add User to CHE
   uri:
-    url: http://keycloak-{{ che_project }}.{{ route_subdomain }}/auth/admin/realms/che/users
+    url: http://keycloak-{{ che_project }}.{{ route_subdomain }}/auth/admin/realms/codeready/users
     method: POST
     headers:
       Authorization: 'Bearer {{ admin_token }}'
     body_format: json
     body:
-      username: "user{{ item }}"
+      username: "{{__user}}"
       enabled: true
       emailVerified: true
-      firstName: user{{ item }}
-      lastName: user{{ item }}
-      email: "user{{ item }}@example.com"
+      firstName: "{{__user}}"
+      lastName: "{{__user}}"
+      email: "{{__user}}@example.com"
       credentials:
         - type: password
           value: "{{ ocp4_workload_dil_serverless_workshop_che_user_password }}"
@@ -24,41 +24,38 @@
   debug:
     msg: "{{ update_result }}" 
 
-
 - name: Get CHE SSO admin token
   uri:
-    url: http://keycloak-{{ che_project }}.{{ route_subdomain }}/auth/realms/che/protocol/openid-connect/token
+    url: http://keycloak-{{ che_project }}.{{ route_subdomain }}/auth/realms/codeready/protocol/openid-connect/token
     method: POST
     body:
-      username: "user{{ item }}"
+      username: "{{__user}}"
       password: "{{ ocp4_workload_dil_serverless_workshop_che_user_password }}"
       grant_type: "password"
       client_id: "admin-cli"
     body_format: form-urlencoded
     status_code: 200
   register: access_token_result
-  
-  
+
 - name: Extract Access Token from Keycloack from result
   set_fact:
-    access_token: '{{access_token_result.json.access_token}}'
-    
-   
-- name: Create workspace for user{{ item }} from devfile
+    access_token: '{{access_token_result.json.access_token}}'    
+
+- name: Create workspace for {{__user}} from devfile
   uri:
-    url: http://che-{{ che_project }}.{{ route_subdomain }}/api/workspace/devfile?start-after-create=true&namespace=user{{ item }}
+    url: http://codeready-{{ che_project }}.{{ route_subdomain }}/api/workspace/devfile?start-after-create=true&namespace={{__user}}
     method: POST
     headers:
       Content-Type: 'text/yaml'
       Authorization: 'Bearer {{ access_token }}'
-    body: '{{ lookup("template", "./templates/che-devfile.yaml.j2") }}'
+    body: '{{ lookup("template", "./templates/crw-devfile.yaml.j2") }}'
     status_code: '201'
   register: workspace_devfile
   ignore_errors: yes
   
-- name: Get workspace for user{{ item }}
+- name: Get workspace for {{__user}}
   uri:
-    url: "http://che-{{ che_project }}.{{ route_subdomain }}/api/workspace"
+    url: "http://codeready-{{ che_project }}.{{ route_subdomain }}/api/workspace"
     method: GET
     headers:
       Accept: application/json
@@ -76,23 +73,12 @@
     workspace_id: '{{workspace_def.json[0].id}}'
     
     
-- name: Verify and start workspace for user{{ item }} again if stopped
+- name: Verify and start workspace for {{__user}} again if stopped
   when: workspace_def.json[0].status == "STOPPED"
   uri:
-    url: "http://che-{{ che_project }}.{{ route_subdomain }}/api/workspace/{{ workspace_def.json[0].id }}/runtime"
+    url: "http://codeready-{{ che_project }}.{{ route_subdomain }}/api/workspace/{{ workspace_def.json[0].id }}/runtime"
     method: POST
     headers:
       Accept: application/json
       Authorization: "Bearer {{ access_token }}"
     status_code: 200
-
-
-
-# RHPDS sepecific
-- name: Delete the core limit range in  user{{ item }}-che from RHPDS setting
-  k8s:
-    api_version: v1
-    kind: LimitRange
-    name: 'user{{ item }}-che-core-resource-limits'
-    namespace: '{{ che_project }}-che'
-    state: absent

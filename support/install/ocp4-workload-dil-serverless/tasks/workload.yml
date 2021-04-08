@@ -41,7 +41,6 @@
   include_tasks: provision_instructions.yaml
   vars:
     webapp_namespace: "instructions"
-    snapshot_operator_project: "openshift-operators"
 
 - name: Provision User Registration
   include_tasks: provision_registration.yaml
@@ -51,8 +50,8 @@
 - name: Provision {{ num_users }} User Namespaces
   include_tasks: provision_userprojects.yaml
 
-# - name: Provision Code Ready Workspace
-#   include_tasks: provision_crw.yaml
-#   vars:
-#     che_project: "che"
-#     csv_version: "2.4.0"
+- name: Provision Code Ready Workspace
+  include_tasks: provision_crw.yaml
+  vars:
+    che_project: "codeready"
+    snapshot_operator_project: "openshift-marketplace"
