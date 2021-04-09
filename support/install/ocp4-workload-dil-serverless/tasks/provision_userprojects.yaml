@@ -23,7 +23,7 @@
     bindings:
     - namespace: 'user'
       role: 'admin'
-    - namespace: 'user-crw'
+    - namespace: 'user-codeready'
       role: 'admin'
     # - namespace: '{{ kafka_earth_namespace }}'
     #   role: 'view'
