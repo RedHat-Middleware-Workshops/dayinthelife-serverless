@@ -6,7 +6,7 @@
   vars:
     __namespaces:
       - "user"
-      - "user-crw"
+      - "user-codeready"
   retries: 10
   delay: 30
 
