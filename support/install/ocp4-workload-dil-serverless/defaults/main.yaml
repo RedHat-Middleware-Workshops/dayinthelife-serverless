@@ -36,6 +36,6 @@ ocp4_workload_dil_serverless_webapp_operator_resource_items:
   - rbac.yaml
   - sa.yaml
   - crd.yaml
-  - operator.yaml
+  # - operator.yaml
 ocp4_workload_dil_serverless_webapp_walkthrough_locations:
   - 'https://github.com/RedHat-Middleware-Workshops/dayinthelife-serverless.git?walkthroughsFolder=/docs/labs'
