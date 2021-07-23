@@ -1,0 +1,99 @@
+// Attributes
+:walkthrough: Getting Ready for the Labs
+:title: Lab 0 - {walkthrough}
+:user-password: openshift
+:standard-fail-text: Verify that you followed all the steps. If you continue to have issues, contact a workshop assistant.
+:namespace: {user-username}
+
+// URLs
+:codeready-url: http://codeready-codeready.{openshift-app-host}/
+
+
+= {title}
+
+[IMPORTANT]
+====
+Please complete the following instructions to get ready for this lab. *If this is not the first lab you are doing today, and you have already completed this step in any of the previous labs, please skip to next task*.
+====
+
+
+One of the main features of Knative is automatic scaling of replicas for an application to closely match incoming demand, including scaling applications to zero if no traffic is being received. The Autoscaler component watches traffic flow to the application, and scales replicas up or down based on configured metrics.
+
+
+=== Start CodeReady workspace
+
+. Once you have logged in and authorized access to your user account, you will land in your personal CodeReady dashboard.
++
+--
+A new workspace has been configured with the required tools, plugins and project to start working on this workshop.
+
+Click on the workspace with the name starting with `dil-serverless-` on the left menu bar under *RECENT WORKSPACES*.
+
+image::images/codeready-dashboard.png[CodeReady Dashboard, role="integr8ly-img-responsive"]
+
+[NOTE]
+====
+You can also click on the name of the workspace in the center, and then click on the green button that says _Open_ on the top right hand side of the screen.
+====
+--
+
+. This will start an instance of the workspace. Please wait a few moments while it downloads the required container images and configuration setup.
++
+image::images/codeready-loading.png[Loading CodeReady, role="integr8ly-img-responsive"]
+
+. The first time it's run, it will git clone the required projects for this workshop. After a minute or two, you’ll be placed in the workspace. Close the initial welcome and Readme tabs then click on the Explorer button on the left side bar.
++
+image::images/codeready-welcome.png[CodeReady Welcome screen, role="integr8ly-img-responsive"]
++
+[NOTE]
+====
+This IDE is based on *Code Ready*, which is in turn is based on Microsoft VS Code editor. It will look familiar if you have already used it.
+
+You can close the _Problems_ and _Output_ views to clear space.
+====
+
+. The projects explorer will show you the *dil-serverless* folder with the required projects. Expand the folders to reveal the projects we cloned from the git repository.
++
+image::images/codeready-projects.png[Workshop projects, role="integr8ly-img-responsive"]
+
+. During the workshop we will need to introduce commands for both the OpenShift and other Command Line Interfaces (CLI) tools. For that we will need to start a terminal window _inside_ one of the containers from the developer workspace. To open the terminal window, click on the _My Workspace_ button on the right side panel and expand the **User Runtimes/tools** folder. Click on *>_ New terminal*.
++
+image::images/codeready-new-terminal.png[Open Terminal, role="integr8ly-img-responsive"]
+
+. This will deploy the terminal window in the bottom of the screen. This terminal is attached to the running CodeReady container and is also running on OpenShift. This is the place where you will issue most of the commands from this workshop.
++
+image::images/codeready-terminal.png[CodeReady Terminal, role="integr8ly-img-responsive"]
+
+=== Login into the OpenShift cluster
+
+. Finally, you will need to login into the OpenShift CLI to start interacting with the platform. For login, issue the following command:
++
+[source,bash,subs="attributes+"]
+----
+oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true
+----
+
+. You should see something like the following (the project names may be different):
++
+----
+Login successful.
+
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+  * {namespace}
+    {namespace}-codeready
+    {namespace}-dayinthel-0605
+
+Using project "{user-username}".
+Welcome! See 'oc help' to get started.
+----
+
+. Most of the work will be deploy to your own `{namespace}` project namespace, so be sure to have it as a _working_ project by executing the following command:
++
+[source,bash,subs="attributes+"]
+----
+oc project {namespace}
+----
+
+. Now you are ready to start working on the application services.
+
