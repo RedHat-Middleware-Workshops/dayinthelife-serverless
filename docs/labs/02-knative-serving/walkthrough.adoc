@@ -6,6 +6,7 @@
 :namespace: {user-username}
 
 // URLs
+:openshift-streams-url: https://console.redhat.com/beta/application-services/streams/kafkas
 :next-lab-url: https://tutorial-web-app-webapp.{openshift-app-host}/tutorial/dayinthelife-streaming.git-labs-02-/
 :codeready-url: http://codeready-codeready.{openshift-app-host}/
 
@@ -52,6 +53,11 @@ Use the following credentials to login into the web consoles:
 .Red Hat OpenShift Developer Console
 ****
 * link:{openshift-host}/topology/ns/{namespace}[Topology View, window="_blank"]
+****
+[type=walkthroughResource]
+.Red Hat OpenShift Application Services
+****
+* link:{openshift-streams-url}[Streams for Apache Kafka, window="_blank"]
 ****
 
 :sectnums:
@@ -265,101 +271,83 @@ Were you able to successfully scale-down and scale-up your application?
 [type=verificationFail]
 {standard-fail-text}
 
+[time=5]
+== Create a Kafka Topic
 
-[time=20]
-== Setup a Kafka Cluster and Topics
+. Open the link:{openshift-streams-url}[OpenShift Streams Console, window="_blank"].
+. Click name of the Kafka cluster you created in the previous lab,e.g `{user-username}-kafka`. This will display the Topics list.
+. Click the *Create Topic* button
+.. Enter `hydrated-meter-events` for the topic name, and click *Next*.
+.. Set the number of partitions to 3, and click *Next*.
+.. Leave the message retention settings at the default values, and click *Next*.
+.. The in-sync replicas is hardcoded to 2 of 3.
+. Click *Finish* to create the topic.
 
-The OpenShift 4 cluster that this lab is being run on has had the *Red Hat Integration - AMQ Streams* operator pre-installed. You'll be using the link:{https://docs.openshift.com/container-platform/4.5/operators/crds/crd-extending-api-with-crds.html#crd-creating-custom-resources-from-file_crd-extending-api-with-crds}[Custom Resources, window="_blank"] provided by the operator to create a Kafka Cluster. Documentation for AMQ Streams on OpenShift can be found at link:{https://access.redhat.com/documentation/en-us/red_hat_amq/7.7/html-single/using_amq_streams_on_openshift/index}[this link, window="_blank"].
+== Deploy HTTP Kafka Bridge
 
-=== Create the Kafka Cluster
-A Kafka Cluster is created by providing OpenShift with an instance of a *Kafka* link:{https://docs.openshift.com/container-platform/4.5/operators/crds/crd-extending-api-with-crds.html#crd-creating-custom-resources-from-file_crd-extending-api-with-crds}[Custom Resource, window="_blank"] via the `oc apply` command, or via the OpenShift Developer Catalog UI. The AMQ Streams operator will create the Kafka Cluster based on the parameters specified in the CR.
-
-[NOTE]
-====
-Throughout this workshop you'll need to copy block of code. Make sure you expand these using the arrow (`>`) to preserve formatting and copy the entire block.
-====
-
-. Open the OpenShift Developer Console link:{user-topology-url}[Topology View, window="_blank"].
-. Click *+Add* on the left menu.
-. Click on the *From Catalog* option.
-. Type in `kafka` in the search text field. You should see a list of Kafka resources that are provided by the operator.
+. Open a terminal in CodeReady Workspaces.
+. Login to the OpenShift CLI using the following command:
 +
-image:images/screenshots/09-kafka-add-resources.png[Available Operator Backed Kafka Resources]
-. Click on the *Kafka* item, review the details, then click the *Create* button.
-. If the *Form View* is displayed, change to the the *YAML View*. It should look similar to this screenshot:
-+
-image:images/screenshots/23-kafka-yaml-view.png[Kafka Add Resources YAML View]
-. Replace the contents of the _YAML_ editor with the following code:
-+
-[source,yaml,subs="attributes+"]
+[source,bash,subs="attributes+"]
 ----
-apiVersion: kafka.strimzi.io/v1beta1
-kind: Kafka
+oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true
+----
+. Select the `{user-username}` project:
++
+[source,bash,subs="attributes+"]
+----
+oc project {user-username}
+----
+. Create a secret containing your Service Account's *Client Secret*. You obtained this from the link:{openshift-streams-url}[OpenShift Streams Console, window="_blank"] in the previous lab.
++
+[source,bash,subs="attributes+"]
+----
+echo -n "client-id-goes-here" > /tmp/client-secret.txt
+oc create secret generic kafka-client-secret \
+--from-file=password=/tmp/secret.txt
+----
+. Create a file named *bridge.yaml* file in your CodeReady workspace. Paste the following content into the file:
++
+[source,yaml,subs="attributes+",role="copypaste"]
+----
+apiVersion: kafka.strimzi.io/v1alpha1
+kind: KafkaBridge
 metadata:
-  name: iot-cluster
+  name: kafka-bridge
+  namespace: {user-username}
 spec:
-  kafka:
-    version: 2.5.0
-    replicas: 3
-    listeners:
-      plain: {}
-      tls: {}
-    config:
-      offsets.topic.replication.factor: 3
-      transaction.state.log.replication.factor: 3
-      transaction.state.log.min.isr: 2
-      log.message.format.version: '2.5'
-    storage:
-      type: ephemeral
-  zookeeper:
-    replicas: 3
-    storage:
-      type: ephemeral
-  entityOperator:
-    topicOperator: {}
-    userOperator: {}
-----
-. Click the *Create* button to create a `Kafka` Custom Resource to define your cluster. You should be returned to the link:{user-topology-url}[Topology View, window="_blank"] automatically.
-
-{blank}
-
-After a few moments the Kafka Cluster will be displayed. It is represented in the Topology View as an application group named *strimzi-iot-cluster*.
-
-image:images/screenshots/04-topology-with-kafka-cluster.png[Topology View with Kafka Cluster]
-
-=== Create a Topic for Meter Updates
-
-. Open the OpenShift Developer Console link:{user-topology-url}[Topology View, window="_blank"].
-. Click *+Add* on the left menu.
-. Click on the *From Catalog* option.
-. Type in `kafka` in the search text field and then click on *Kafka Topic*.
-. Click the *Create* button.
-. Create a `Kafka Topic` Custom Resource to define your connector. Change to the the *YAML View*. Replace the contents of the _YAML_ editor with the following code:
-+
-[source,yaml,subs="attributes+"]
-----
-apiVersion: kafka.strimzi.io/v1beta1
-kind: KafkaTopic
-metadata:
-  name: hydrated-meter-events
-  labels:
-    strimzi.io/cluster: iot-cluster
-spec:
-  partitions: 10
+  bootstrapServers: REPLACE_ME
+  http:
+    port: 8080
   replicas: 1
-  config:
-    retention.ms: 604800000
-    segment.bytes: 1073741824
+  authentication:
+    type: plain
+    username: REPLACE_ME
+    passwordSecret:
+      secretName: kafka-client-secret
+      password: password
+  tls:
+    enable: true
+    caCert: {}
+    cert: {}
+    key: {}
 ----
-. Click the *Create* button.
+. Replace the *spec.bootstrapServers* with the Bootstrap Server URL from the link:{openshift-streams-url}[OpenShift Streams Console, window="_blank"].
+. Replace the *authentication.username* with your Service Account's *Client ID* that you obtained in the previous lab.
+. Apply this YAML to your OpenShift Project:
++
+[source,bash,subs="attributes+"]
+----
+oc apply -f bridge.yaml
+----
+. Wait for the Kafka Bridge Pod to enter a *Running* status. You can watch it's status using this command:
++
+[source,bash,subs="attributes+"]
+----
+oc get pods -l app.kubernetes.io/name=kafka-bridge -w
+----
 
-{blank}
-
-The AMQ Streams operator will automatically create the Topic in the Kafka Cluster shortly after you submit the CR YAML.
-
-
-
-=== API to Eventing
+== API to Eventing
 
 . In CodeReady add the following code to the end of route,
 
