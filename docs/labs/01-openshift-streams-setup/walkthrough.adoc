@@ -37,7 +37,11 @@ If you do not have an existing account follow the *Register for a Red Hat accoun
 
 At this point you should be logged in and viewing the *OpenShift {product-name}* UI.
 
+{blank}
+
 image::images/00-kafka-streams-home.png[OpenShift {product-name} UI]
+
+{blank}
 
 [time=5]
 == Creating a Kafka Instance
@@ -50,7 +54,11 @@ image::images/00-kafka-streams-home.png[OpenShift {product-name} UI]
 Creation can take up to 5 minutes. The *Status* column in the UI will display a
 green checkmark and *Ready* status one the instance has finished provisioning.
 
+{blank}
+
 image::images/01-kafka-ready.png[Kafka instance in Ready state]
+
+{blank}
 
 [time=5]
 == Connecting to a Kafka Instance
@@ -68,7 +76,7 @@ This section will show you how to obtain these values.
 image::images/02-kafka-details.png[Kafka instance in Ready state]
 . Click the *Create service account* button.
 . Enter a *Name* and *Description* for the Service Account. Click *Create*
-. Copy the Client ID and Secret to a secure location.
+. Copy the *Client ID* and *Client Secret* to a secure location.
 +
 image::images/03-kafka-credentials.png[Kafka Service Account Details]
 
@@ -77,9 +85,12 @@ image::images/03-kafka-credentials.png[Kafka Service Account Details]
 You'll use the link:https://github.com/edenhill/kafkacat[kafkacat CLI, window="_blank"]
 to verify connectivity to your managed Kafka instance.
 
-. Navigate to the link::codeready-url: http://codeready-codeready.{openshift-app-host}/[CodeReady Workspace, window="_blank"]
-. Open the workspace with the name starting with `dil-serverless-`.
-. Click on the _My Workspace_ button on the right side panel.. Expand the **User Runtimes/tools** folder.
+{blank}
+
+. Navigate to the link:{codeready-url}[CodeReady Workspace, window="_blank"]
+. Open the workspace named `dil-serverless-{user-username}`.
+. Click on the _My Workspace_ (cube) icon on the right side panel.
+. Expand the **User Runtimes/tools** folder.
 . Click on *>_ New terminal*.
 . Run the following command to connect to your Kafka instance and list topic metadata:
 +
