@@ -44,11 +44,11 @@ To access your development environment:
 
 Once you are logged in, you'll see the CodeReady dashboard. This lists available workspaces.
 
-This workshop provides pre-configured workspace with plugins, source code, and even container images that have various Command-Line Interface (CLI) tools installed.
-
 image::images/00-crw-dashboard.png[CodeReady Dashboard, role="integr8ly-img-responsive"]
 
 === Accessing you CodeReady Workspace
+
+This workshop provides a single, pre-configured workspace with plugins, source code, and even container images that have various Command-Line Interface (CLI) tools installed.
 
 . Click the *Open* link for the workspace named `dil-serverless-{user-username}`.
 . This will start an instance of the workspace. Please wait a few moments while it downloads the required container images and configuration setup.
@@ -75,6 +75,8 @@ Access the tools container(s) like so:
 . Expand the *User Runtimes* folder.
 . Expand the *tools* section.
 . Click on *>_ New terminal*.
+
+{blank}
 
 A terminal window should be open at the bottom of the screen. This terminal is attached to the running CodeReady container and is also running on OpenShift. This is the place where you will issue most of the commands from this workshop.
 
@@ -114,5 +116,7 @@ Welcome! See 'oc help' to get started.
 oc project {namespace}
 ----
 
-. Now you are ready to start working on the application services.
+{blank}
+
+Now you are ready to start working on the application services!
 
