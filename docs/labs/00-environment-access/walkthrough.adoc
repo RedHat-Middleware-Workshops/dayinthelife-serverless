@@ -8,8 +8,24 @@
 // URLs
 :codeready-url: http://codeready-codeready.{openshift-app-host}/
 
-
 = {title}
+
+[type=walkthroughResource,serviceName=codeready]
+.Red Hat CodeReady Workspaces
+****
+* link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
+****
+[type=walkthroughResource]
+.Red Hat OpenShift Developer Console
+****
+* link:{openshift-host}/topology/ns/{namespace}[Topology View, window="_blank"]
+****
+[type=walkthroughResource]
+.Red Hat OpenShift Application Services
+****
+* link:{openshift-streams-url}[Streams for Apache Kafka, window="_blank"]
+****
+
 
 [IMPORTANT]
 ====
@@ -19,7 +35,7 @@ Please complete the following instructions to get ready for this lab. *If this i
 
 One of the main features of Knative is automatic scaling of replicas for an application to closely match incoming demand, including scaling applications to zero if no traffic is being received. The Autoscaler component watches traffic flow to the application, and scales replicas up or down based on configured metrics.
 
-
+[time=5]
 == Start CodeReady workspace
 
 . Once you have logged in and authorized access to your user account, you will land in your personal CodeReady dashboard.
@@ -64,6 +80,7 @@ image::images/codeready-new-terminal.png[Open Terminal, role="integr8ly-img-resp
 +
 image::images/codeready-terminal.png[CodeReady Terminal, role="integr8ly-img-responsive"]
 
+[time=5]
 == Login into the OpenShift cluster
 
 . Finally, you will need to login into the OpenShift CLI to start interacting with the platform. For login, issue the following command:

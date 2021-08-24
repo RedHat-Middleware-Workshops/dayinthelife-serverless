@@ -23,6 +23,7 @@ infrastructure.
 This lab guides you through the process of obtaining a Kafka cluster using
 Red Hat OpenShift {product-name}.
 
+[time=5]
 == Accessing OpenShift {product-name}
 
 . Log in to the Hybrid Cloud Console at link:https://console.redhat.com/[console.redhat.com, window="_blank"].
@@ -38,6 +39,7 @@ At this point you should be logged in and viewing the *OpenShift {product-name}*
 
 image::images/00-kafka-streams-home.png[OpenShift {product-name} UI]
 
+[time=5]
 == Creating a Kafka Instance
 
 . Click the *Create Kafka instance* button.
@@ -50,6 +52,7 @@ green checkmark and *Ready* status one the instance has finished provisioning.
 
 image::images/01-kafka-ready.png[Kafka instance in Ready state]
 
+[time=5]
 == Connecting to a Kafka Instance
 
 Connecting to a {product-name} instance requires the *Bootstrap server URL* and
