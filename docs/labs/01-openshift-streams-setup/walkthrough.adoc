@@ -35,6 +35,8 @@ If you do not have an existing account follow the *Register for a Red Hat accoun
 . Expand the *Find an app or service* dropdown at the top.
 . Select the *{product-name}* item.
 
+{blank}
+
 At this point you should be logged in and viewing the *OpenShift {product-name}* UI.
 
 {blank}
@@ -50,6 +52,8 @@ image::images/00-kafka-streams-home.png[OpenShift {product-name} UI]
 . Enter a name for your Kafka instance, e.g `{user-username}-kafka`.
 . Use the default values for the available parameters.
 . Click the *Create instance* button.
+
+{blank}
 
 Creation can take up to 5 minutes. The *Status* column in the UI will display a
 green checkmark and *Ready* status one the instance has finished provisioning.
@@ -111,5 +115,7 @@ kafkacat -b $BOOTSTRAP_SERVER \
 
 // TODO: replace with screenshot from codeready workspaces
 image::images/04-kafkacat-metadata.png[Kafkacat Metdata Listing]
+
+{blank}
 
 You're now ready to move onto the next lab!
