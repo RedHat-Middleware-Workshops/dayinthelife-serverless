@@ -4,8 +4,9 @@
 :standard-fail-text: Verify that you followed all the steps. If you continue to have issues, contact a workshop assistant.
 :namespace: {user-username}
 :product-name: Streams for Apache Kafka
-= {title}
 :codeready-url: http://codeready-codeready.{openshift-app-host}/
+
+= {title}
 
 *Overview*
 
