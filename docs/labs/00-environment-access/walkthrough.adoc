@@ -29,9 +29,11 @@
 The following instructions introduce you to your development environment, and the cluster where you'll deploy your applications throughout this workshop.
 
 [time=5]
-== Access a CodeReady Workspace
+== Accessing a Development Environment
 
 The development environment you use throughout the workshop is a web-hosted IDE known as *Red Hat CodeReady Workspaces*.
+
+=== Login to CodeReady Workspaces
 
 To access your development environment:
 
@@ -46,7 +48,7 @@ This workshop provides pre-configured workspace with plugins, source code, and e
 
 image::images/00-crw-dashboard.png[CodeReady Dashboard, role="integr8ly-img-responsive"]
 
-{blank}
+=== Accessing you CodeReady Workspace
 
 . Click the *Open* link for the workspace named `dil-serverless-{user-username}`.
 . This will start an instance of the workspace. Please wait a few moments while it downloads the required container images and configuration setup.
@@ -61,6 +63,7 @@ This IDE is based on *CodeReady*, which is in turn is based on Microsoft VSCode.
 You can close the _Problems_ and _Output_ views to clear space.
 ====
 
+[time=2]
 == Accessing a Terminal
 
 During the workshop you will use the OpenShift CLI along with other developer-focused Command Line Interface (CLI) tools.
@@ -77,7 +80,7 @@ A terminal window should be open at the bottom of the screen. This terminal is a
 
 image::images/02-crw-tools-container.png[Open Terminal, role="integr8ly-img-responsive"]
 
-[time=5]
+[time=2]
 == Login into OpenShift using the CLI
 
 . Open a terminal using the instructions from the previous section.
