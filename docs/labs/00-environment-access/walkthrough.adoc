@@ -26,64 +26,62 @@
 * link:{openshift-streams-url}[Streams for Apache Kafka, window="_blank"]
 ****
 
-
-[IMPORTANT]
-====
-Please complete the following instructions to get ready for this lab. *If this is not the first lab you are doing today, and you have already completed this step in any of the previous labs, please skip to next task*.
-====
-
-
-One of the main features of Knative is automatic scaling of replicas for an application to closely match incoming demand, including scaling applications to zero if no traffic is being received. The Autoscaler component watches traffic flow to the application, and scales replicas up or down based on configured metrics.
+The following instructions introduce you to your development environment, and the cluster where you'll deploy your applications throughout this workshop.
 
 [time=5]
-== Start CodeReady workspace
+== Access a CodeReady Workspace
 
-. Once you have logged in and authorized access to your user account, you will land in your personal CodeReady dashboard.
-+
---
-A new workspace has been configured with the required tools, plugins and project to start working on this workshop.
+The development environment you use throughout the workshop is a web-hosted IDE known as *Red Hat CodeReady Workspaces*.
 
-Click on the workspace with the name starting with `dil-serverless-` on the left menu bar under *RECENT WORKSPACES*.
+To access your development environment:
 
-image::images/codeready-dashboard.png[CodeReady Dashboard, role="integr8ly-img-responsive"]
+. Click the *Console* link under the *Red Hat CodeReady Workspaces* in the *Resources* panel on the right.
+. Log in using your username (`{user-username}`) and password (`{user-password}`).
 
-[NOTE]
-====
-You can also click on the name of the workspace in the center, and then click on the green button that says _Open_ on the top right hand side of the screen.
-====
---
+{blank}
 
+Once you are logged in, you'll see the CodeReady dashboard. This lists available workspaces.
+
+This workshop provides pre-configured workspace with plugins, source code, and even container images that have various Command-Line Interface (CLI) tools installed.
+
+image::images/00-crw-dashboard.png[CodeReady Dashboard, role="integr8ly-img-responsive"]
+
+{blank}
+
+. Click the *Open* link for the workspace named `dil-serverless-{user-username}`.
 . This will start an instance of the workspace. Please wait a few moments while it downloads the required container images and configuration setup.
+. Close the welcome and README tab, then click on the Explorer (file) icon on the left side bar. The Explorer shows you the *dil-serverless* folder with the required projects and lab files.
 +
-image::images/codeready-loading.png[Loading CodeReady, role="integr8ly-img-responsive"]
-
-. The first time it's run, it will git clone the required projects for this workshop. After a minute or two, you’ll be placed in the workspace. Close the initial welcome and Readme tabs then click on the Explorer button on the left side bar.
-+
-image::images/codeready-welcome.png[CodeReady Welcome screen, role="integr8ly-img-responsive"]
+image::images/01-crw-welcome.png[CodeReady Welcome screen, role="integr8ly-img-responsive"]
 +
 [NOTE]
 ====
-This IDE is based on *Code Ready*, which is in turn is based on Microsoft VS Code editor. It will look familiar if you have already used it.
+This IDE is based on *CodeReady*, which is in turn is based on Microsoft VSCode. It will look familiar if you have already used it.
 
 You can close the _Problems_ and _Output_ views to clear space.
 ====
 
-. The projects explorer will show you the *dil-serverless* folder with the required projects. Expand the folders to reveal the projects we cloned from the git repository.
-+
-image::images/codeready-projects.png[Workshop projects, role="integr8ly-img-responsive"]
+== Accessing a Terminal
 
-. During the workshop we will need to introduce commands for both the OpenShift and other Command Line Interfaces (CLI) tools. For that we will need to start a terminal window _inside_ one of the containers from the developer workspace. To open the terminal window, click on the _My Workspace_ button on the right side panel and expand the **User Runtimes/tools** folder. Click on *>_ New terminal*.
-+
-image::images/codeready-new-terminal.png[Open Terminal, role="integr8ly-img-responsive"]
+During the workshop you will use the OpenShift CLI along with other developer-focused Command Line Interface (CLI) tools.
+These CLI tools are available directly inside your Workspace via tools containers.
 
-. This will deploy the terminal window in the bottom of the screen. This terminal is attached to the running CodeReady container and is also running on OpenShift. This is the place where you will issue most of the commands from this workshop.
-+
-image::images/codeready-terminal.png[CodeReady Terminal, role="integr8ly-img-responsive"]
+Access the tools container(s) like so:
+
+. Click on the _My Workspace_ (cube) icon on the right side panel.
+. Expand the *User Runtimes* folder.
+. Expand the *tools* section.
+. Click on *>_ New terminal*.
+
+A terminal window should be open at the bottom of the screen. This terminal is attached to the running CodeReady container and is also running on OpenShift. This is the place where you will issue most of the commands from this workshop.
+
+image::images/02-crw-tools-container.png[Open Terminal, role="integr8ly-img-responsive"]
 
 [time=5]
-== Login into the OpenShift cluster
+== Login into OpenShift using the CLI
 
-. Finally, you will need to login into the OpenShift CLI to start interacting with the platform. For login, issue the following command:
+. Open a terminal using the instructions from the previous section.
+. Issue the following command:
 +
 [source,bash,subs="attributes+"]
 ----
@@ -100,6 +98,7 @@ You have access to the following projects and can switch between them with 'oc p
   * {namespace}
     {namespace}-codeready
     {namespace}-dayinthel-0605
+    {namespace}-shared-475f
 
 Using project "{user-username}".
 Welcome! See 'oc help' to get started.
