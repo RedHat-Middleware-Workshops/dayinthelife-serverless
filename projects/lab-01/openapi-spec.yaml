@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
     title: Meter API
     version: 1.0.0
-    description: A brand new API with no content.  Go nuts!
+    description: Parking Meter API. Allows meters to provide their updates via HTTP POST.
 paths:
     /meter/status:
         post:

@@ -5,6 +5,7 @@
 :namespace: {user-username}
 :product-name: Streams for Apache Kafka
 :codeready-url: http://codeready-codeready.{openshift-app-host}/
+:cloud-console: https://console.redhat.com/
 
 = {title}
 
@@ -26,7 +27,7 @@ Red Hat OpenShift {product-name}.
 [time=5]
 == Accessing OpenShift {product-name}
 
-. Log in to the Hybrid Cloud Console at link:https://console.redhat.com/[console.redhat.com, window="_blank"].
+. Log in to the Red Hat Hybrid Cloud Console at link:{cloud-console}[console.redhat.com, window="_blank"].
 +
 [NOTE]
 ====

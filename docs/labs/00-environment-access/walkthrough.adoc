@@ -38,7 +38,7 @@ The development environment you use throughout the workshop is a web-hosted IDE 
 To access your development environment:
 
 . Click the *Console* link under the *Red Hat CodeReady Workspaces* in the *Resources* panel on the right.
-. Log in using your username (`{user-username}`) and password (`{user-password}`).
+. Log in using your username (`{user-username}`) and password (`{user-password}`)
 
 {blank}
 
