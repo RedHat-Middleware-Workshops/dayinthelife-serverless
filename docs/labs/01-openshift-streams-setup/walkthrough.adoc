@@ -17,6 +17,12 @@ This series of labs will guide you through the deployment of a hybrid-cloud arch
 
 Managing Kafka is a specialized task. Red Hat OpenShift Streams for Apache Kafka provides Kafka clusters that are managed by Red Hat in the cloud vendor and region of your choice. This allows you to focus on business objectives, while Red Hat OpenShift {product-name} takes care of your infrastructure.
 
+[type=walkthroughResource]
+.Red Hat Hybrid Cloud
+****
+* link:{cloud-console}[Console, window="_blank"]
+****
+
 [time=5]
 == Accessing OpenShift {product-name}
 
@@ -24,10 +30,16 @@ Managing Kafka is a specialized task. Red Hat OpenShift Streams for Apache Kafka
 +
 [NOTE]
 ====
-If you do not have an existing account follow the *Register for a Red Hat account* link on the login page to create one.
+If you do not have an existing account follow the *Register for a Red Hat account* link on the login page to create one. Otherwise use your Red Hat account to log into the system.
 ====
-. Expand the *Find an app or service* dropdown at the top.
-. Select the *{product-name}* item.
++
+image::images/000-cloud-register.png[Register]
+. Expand the *Find an app or service* dropdown at the top and select the *{product-name}* item.
++
+image::images/001-app-services.png[Find app or service]
+. Dismiss the Welcome dialog by clicking on *Not now*.
++
+image::images/002-dismiss-tour.png[Close Guided Tour]
 
 {blank}
 
@@ -39,13 +51,23 @@ image::images/00-kafka-streams-home.png[OpenShift {product-name} UI]
 
 {blank}
 
+Now that you have a cloud services account, you can start creating resources.
+
 [time=5]
 == Creating a Kafka Instance
 
 . Click the *Create Kafka instance* button.
++
+image::images/000-create-kafka-instance.png[Create Kafka Instance]
+
 . Enter a name for your Kafka instance, e.g `{user-username}-kafka`.
 . Use the default values for the available parameters.
 . Click the *Create instance* button.
++
+image::images/001-create-user-instance.png[Create User Instance]
+. This will start your cluster deployment. You should be able to see the status *Creation pending*.
++
+image::images/002-creation-in-progress.png[Creation Pending]
 
 {blank}
 
@@ -58,8 +80,10 @@ image::images/01-kafka-ready.png[Kafka instance in Ready state]
 
 {blank}
 
+It is time to create an account for application to connect to your new Kafka cluster.
+
 [time=5]
-== Connecting to a Kafka Instance
+== Instance Connection Details
 
 Connecting to a {product-name} instance requires the *Bootstrap server URL* and
 the *Client ID* and *Client Password* associated with a *Service Account*.
@@ -68,24 +92,44 @@ This section will show you how to obtain these values.
 
 === Obtain the Connection Details
 
-. Click the row for your Kafka instance to view the instance details panel.
-. Select the *Connection* tab. The *Bootstrap server* URL can be obtained from this screen.
+. Click the kebab menu at the right side of the row of your Kafka instance and click *View details* to view the instance details panel.
++
+image::images/000-view-details.png[View Details]
+. Select the *Connection* tab. Click the clipboard button to copy the *Bootstrap server* URL from this screen. Then click on *Create service account*.
 +
 image::images/02-kafka-details.png[Kafka instance in Ready state]
-. Click the *Create service account* button.
-. Enter a *Name* and *Description* for the Service Account. Click *Create*
-. Copy the *Client ID* and *Client Secret* to a secure location.
+. Enter `{user-username}-sa` in *Name* and `Workshop service account` in the *Description* for the Service Account. Click *Create*
++
+image::images/001-create-serviceacount.png[Create service account]
+. Copy the *Client ID* and *Client Secret* by clicking the clipboard button for each field to a secure location. After you are sure that you have the values secured, select the checkbox and click the *Close* button.
 +
 image::images/03-kafka-credentials.png[Kafka Service Account Details]
++
+{blank}
++
+[NOTE]
+====
+The service account *Client Secret* is only showed once in this dialog. If you didn't capture the value, you will need to regenerate the credentials for the service account.
+====
 
-=== Verify Connectivity
+You are now ready to test the connectivity to your cluster.
 
-You'll use the link:https://github.com/edenhill/kafkacat[kafkacat CLI, window="_blank"]
-to verify connectivity to your managed Kafka instance.
+[time=5]
+== Verify Connectivity
+
+[type=taskResource]
+.Red Hat CodeReady Workspaces
+****
+* link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
+****
+
+Now that you have a cluster an account created is time to test the connectivity to your cluster. 
+
+You'll use the link:https://github.com/edenhill/kafkacat[kafkacat CLI, window="_blank"] utility to verify connectivity to your managed Kafka instance.
 
 {blank}
 
-. Navigate to the link:{codeready-url}[CodeReady Workspace, window="_blank"]
+. Navigate back to the link:{codeready-url}[CodeReady Workspace, window="_blank"] tab
 . Open the workspace named `dil-serverless-{user-username}`.
 . Click on the _My Workspace_ (cube) icon on the right side panel.
 . Expand the **User Runtimes/tools** folder.
@@ -106,10 +150,10 @@ kafkacat -b $BOOTSTRAP_SERVER \
 -X sasl.password=$CLIENT_SECRET -L
 ----
 . The command will print a list of brokers and topic metadata if you've passed valid parameters.
-
++
 // TODO: replace with screenshot from codeready workspaces
 image::images/04-kafkacat-metadata.png[Kafkacat Metdata Listing]
 
 {blank}
 
-You're now ready to move onto the next lab!
+Congratulations! You successfully created a new Kafka cluster to send and receive events. You're now ready to move onto the next lab!
