@@ -33,13 +33,13 @@ The following instructions introduce you to your development environment, and th
 [time=5]
 == Accessing a Development Environment
 
-The development environment you use throughout the workshop is a web-hosted IDE known as *Red Hat CodeReady Workspaces*.
+The development environment you use throughout the workshop is a web-hosted IDE known as link:{https://developers.redhat.com/products/codeready-workspaces/overview}[Red Hat CodeReady Workspaces, window="_blank"].
 
 === Login to CodeReady Workspaces
 
 To access your development environment:
 
-. Click the *Console* link under the *Red Hat CodeReady Workspaces* in the *Resources* panel on the right.
+. Click the link:{codeready-url}[Console, window="_blank"] link under the *Red Hat CodeReady Workspaces* in the *Resources* panel on the right.
 . Log in using your username (`{user-username}`) and password (`{user-password}`)
 
 {blank}
@@ -97,15 +97,16 @@ oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:
 
 . You should see something like the following (the project names may be different):
 +
+[subs="attributes+"]
 ----
 Login successful.
 
 You have access to the following projects and can switch between them with 'oc project <projectname>':
 
-  * {namespace}
-    {namespace}-codeready
-    {namespace}-dayinthel-0605
-    {namespace}-shared-475f
+  * {user-username}
+    {user-username}-codeready
+    {user-username}-dayinthel-0605
+    {user-username}-shared-475f
 
 Using project "{user-username}".
 Welcome! See 'oc help' to get started.
