@@ -7,8 +7,12 @@
 
 // URLs
 :codeready-url: http://codeready-codeready.{openshift-app-host}/
+:openshift-streams-url: https://console.redhat.com/beta/application-services/streams/kafkas
 
+[id='getting-ready']
 = {title}
+
+The following instructions introduce you to your development environment, and the cluster where you'll deploy your applications throughout this workshop.
 
 [type=walkthroughResource,serviceName=codeready]
 .Red Hat CodeReady Workspaces
@@ -25,8 +29,6 @@
 ****
 * link:{openshift-streams-url}[Streams for Apache Kafka, window="_blank"]
 ****
-
-The following instructions introduce you to your development environment, and the cluster where you'll deploy your applications throughout this workshop.
 
 [time=5]
 == Accessing a Development Environment

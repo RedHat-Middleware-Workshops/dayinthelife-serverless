@@ -9,20 +9,13 @@
 
 = {title}
 
+This lab guides you through the process of obtaining a Kafka cluster that is managed by Red Hat using Red Hat OpenShift Streams for Apache Kafka.
+
 *Overview*
 
-This series of labs will guide you through the deployment of a hybrid-cloud
-architecture. A key element of this architecture is event streaming based
-upon Apache Kafka.
+This series of labs will guide you through the deployment of a hybrid-cloud architecture. A key element of this architecture is event streaming based upon Apache Kafka.
 
-Managing Kafka is a specialized task. Red Hat OpenShift Streams for Apache
-Kafka provides Kafka clusters that are managed by Red Hat in the cloud vendor
-and region of your choice. This allows you to focus on business objectives,
-while Red Hat OpenShift {product-name} takes care of your
-infrastructure.
-
-This lab guides you through the process of obtaining a Kafka cluster using
-Red Hat OpenShift {product-name}.
+Managing Kafka is a specialized task. Red Hat OpenShift Streams for Apache Kafka provides Kafka clusters that are managed by Red Hat in the cloud vendor and region of your choice. This allows you to focus on business objectives, while Red Hat OpenShift {product-name} takes care of your infrastructure.
 
 [time=5]
 == Accessing OpenShift {product-name}
