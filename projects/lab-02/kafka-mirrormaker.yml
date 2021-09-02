@@ -1,0 +1,62 @@
+apiVersion: kafka.strimzi.io/v1alpha1
+kind: KafkaMirrorMaker2
+metadata:
+  name: smartcity
+spec:
+  version: 2.6.0
+  replicas: 1
+  connectCluster: "smartcity-central"
+  clusters:
+  - alias: "edge"
+    bootstrapServers: edge-kafka-bootstrap.{{user}}-smartcity-edge.svc:9092
+  - alias: "smartcity-central"
+    bootstrapServers: {{smartcity-central-bootstrap-server}}
+    authentication:
+      type: plain
+      username: {{smartcity-central-service-account-id}}
+      passwordSecret:
+        secretName: rh-cloud-services-service-account
+        password: client-secret
+    tls:
+      trustedCertificates: []
+    config:
+      # -1 means it will use the default replication factor configured in the broker
+      config.storage.replication.factor: 3
+      offset.storage.replication.factor: 3
+      status.storage.replication.factor: 3
+  mirrors:
+  - sourceCluster: "edge"
+    targetCluster: "smartcity-central"
+    sourceConnector:
+      config:
+        replication.factor: 3
+        offset-syncs.topic.replication.factor: 3
+        sync.topic.acls.enabled: "false"
+        replication.policy.separator: "-"
+    heartbeatConnector:
+      config:
+        heartbeats.topic.replication.factor: 3
+    checkpointConnector:
+      config:  
+        checkpoints.topic.replication.factor: 3
+        refresh.groups.interval.seconds: 600
+        sync.group.offsets.enabled: false        
+    topicsPattern: "toll-station-events"
+    groupsPattern: ".*"
+  resources:
+    requests:
+      cpu: 250m
+      memory: 500Mi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+  logging:
+    type: inline
+    loggers:
+      connect.root.logger.level: "INFO"
+  readinessProbe:
+    initialDelaySeconds: 15
+    timeoutSeconds: 5
+  livenessProbe:
+    initialDelaySeconds: 15
+    timeoutSeconds: 5
