@@ -1,6 +1,7 @@
 // Attributes
 :walkthrough: Provision a Managed Kafka cluster
 :title: Lab 1 - {walkthrough}
+:user-password: openshift
 :standard-fail-text: Verify that you followed all the steps. If you continue to have issues, contact a workshop assistant.
 :namespace: {user-username}
 :product-name: Streams for Apache Kafka
@@ -121,6 +122,12 @@ You are now ready to test the connectivity to your cluster.
 .Red Hat CodeReady Workspaces
 ****
 * link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
+****
+[type=taskResource]
+.Credentials
+****
+* *username:* `{user-username}`
+* *password:* `{user-password}`
 ****
 
 Now that you have a cluster an account created is time to test the connectivity to your cluster. 
