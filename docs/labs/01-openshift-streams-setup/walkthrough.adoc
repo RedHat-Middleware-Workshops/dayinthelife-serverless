@@ -125,24 +125,44 @@ You are now ready to test the connectivity to your cluster.
 
 Now that you have a cluster an account created is time to test the connectivity to your cluster. 
 
-You'll use the link:https://github.com/edenhill/kafkacat[kafkacat CLI, window="_blank"] utility to verify connectivity to your managed Kafka instance.
+You'll use the link:https://github.com/edenhill/kafkacat[kcat, window="_blank"] command line utility to verify connectivity to your managed Kafka instance.
 
 {blank}
 
 . Navigate back to the link:{codeready-url}[CodeReady Workspace, window="_blank"] tab
-. Open the workspace named `dil-serverless-{user-username}`.
-. Click on the _My Workspace_ (cube) icon on the right side panel.
-. Expand the **User Runtimes/tools** folder.
-. Click on *>_ New terminal*.
+. If you haven't done it, open the workspace named `dil-serverless-{user-username}`.
+. If you don't have your terminal tab open:
+.. Click on the _My Workspace_ (cube) icon on the right side panel.
+.. Expand the **User Runtimes/tools** folder.
+.. Click on *>_ New terminal*.
 . Run the following command to connect to your Kafka instance and list topic metadata:
++
+[NOTE]
+====
+Don't forget to replace the `<replace-me>` part of the command with the values you previously wrote down.
+====
+.. Export the Bootstrap server:
 +
 [source,bash,subs="attributes+"]
 ----
-# You obtained these from the {product-name} UI previously
 export BOOTSTRAP_SERVER=<replace-me>
+----
+.. Export the Client Id:
++
+[source,bash,subs="attributes+"]
+----
 export CLIENT_ID=<replace-me>
+----
+.. Export the Client Id:
++
+[source,bash,subs="attributes+"]
+----
 export CLIENT_SECRET=<replace-me>
-
+----
+.. Finally run the kcat command:
++
+[source,bash,subs="attributes+"]
+----
 kafkacat -b $BOOTSTRAP_SERVER \
 -X sasl.mechanisms=PLAIN \
 -X security.protocol=SASL_SSL \
@@ -151,7 +171,6 @@ kafkacat -b $BOOTSTRAP_SERVER \
 ----
 . The command will print a list of brokers and topic metadata if you've passed valid parameters.
 +
-// TODO: replace with screenshot from codeready workspaces
 image::images/04-kafkacat-metadata.png[Kafkacat Metdata Listing]
 
 {blank}
