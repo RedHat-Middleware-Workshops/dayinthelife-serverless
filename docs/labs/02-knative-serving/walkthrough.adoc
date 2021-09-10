@@ -69,14 +69,28 @@ image:images/01-topology.png[Initial Project Topology]
     * A Postgres database containing reference data for Parking Meters. This database has the Debezium CDC extensions pre-configured to simplify this workshop.
     * A GraphQL API built using Node.js and link:https://graphback.dev[Graphback, window="_blank"]. This provides access to Meter and Junction data stored in Postgres.
     * An NGINX container that serves a web application built using React. This web application communicates with the GraphQL API.
-. Click on the NGINX node in the Topology View.
-. Select the the *Resources* tab, and click the URL listed under *Routes*. It will look similar to `https://sensor-management-ui-{namespace}.{openshift-app-host}`.
+. Click on the NGINX node in the Topology View and select the the *Resources* tab.
++
+image:images/000-nginx-resources.png[NGINX Resources]
+. Scroll all the way down and click the URL listed under *Routes*. It should look similar to the following: `https://sensor-management-ui-{namespace}.{openshift-app-host}`.
++
+image:images/001-nginx-route.png[NGINX Route]
 . The link should render a web application with a title *LA Department of Transport* similar to the one shown below.
 +
-image:images/02-ladot-home.png[LA DoT Home Page]
+image:images/02-ladot-home.png[DoT Home Page]
 . Click the *Meters* link in the navigation bar at the top of the application. A list of meters should be displayed.
-. The previous step verifies that the Node.js GraphQL API is communicating with the Postgres database.
-. Enter `santa monica` into the search field and press Enter or click the blue Search button. Parking Meters from Santa Monica Blvd are listed.
++
+image:images/002-meter-view.png[DoT Meters]
++
+{blank}
++
+[NOTE]
+====
+The previous step verifies that the Node.js GraphQL API is communicating with the Postgres database.
+====
+. Enter `santa monica` into the search field and press Enter or click the blue *Search* button. Parking Meters from _Santa Monica Blvd_ are listed.
++
+image:images/003-santamonica-meters.png[DoT Santa Monica Meters]
 . Select the first item on the list. A details screen for that Parking Meter should be displayed.
 +
 image:images/03-meter-search.png[LA DoT Search Page]

@@ -24,6 +24,8 @@ Managing Kafka is a specialized task. Red Hat OpenShift Streams for Apache Kafka
 * link:{cloud-console}[Console, window="_blank"]
 ****
 
+:sectnums:
+
 [time=5]
 == Accessing OpenShift {product-name}
 
