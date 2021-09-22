@@ -71,9 +71,9 @@ image::images/001-create-user-instance.png[Create User Instance]
 . This will start your cluster deployment. You should be able to see the status *Creation pending*.
 +
 image::images/002-creation-in-progress.png[Creation Pending]
-
++
 {blank}
-
++
 [NOTE]
 ====
 Creation can take between 5 to 15 minutes. 
