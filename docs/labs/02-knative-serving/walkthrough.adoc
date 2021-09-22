@@ -311,7 +311,7 @@ image:images/10-db-result.png[PostgreSQL Query Output]
 export TIMESTAMP=`date +%s`
 
 curl -X POST \
-http://meter-consumer-user1.apps.cluster-7263.7263.sandbox741.opentlc.com/meter/status \
+http://meter-consumer-{namespace}.{openshift-app-host}/meter/status \
 -H 'content-type: application/json' \
 -d '
      {
