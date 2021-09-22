@@ -76,7 +76,7 @@ image::images/002-creation-in-progress.png[Creation Pending]
 
 [NOTE]
 ====
-Creation can take up between 5 to 15 minutes. 
+Creation can take between 5 to 15 minutes. 
 ====
 
 The *Status* column in the UI will display a
