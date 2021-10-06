@@ -140,9 +140,13 @@ image:images/07-openshift-token.png[Red Hat Cloud Token]
 [source,bash,subs="attributes+"]
 ----
 export TOKEN=YOUR_TOKEN_GOES_HERE
-
+----
++
+[source,bash,subs="attributes+"]
+----
 rhoas login --token $TOKEN
 ----
+
 . Set your Managed Kafka as the working context. This command will provide a prompt to choose your Kafka cluster:
 +
 [source,bash,subs="attributes+"]
@@ -263,10 +267,12 @@ rhoas kafka describe
 [source,bash,role="copypaste",subs="attributes+"]
 ----
 cd projects/lab-01/
+----
 
++
+[source,bash,role="copypaste",subs="attributes+"]
+----
 kamel run MeterConsumer.java --namespace {namespace}
-
-oc patch -n {namespace} ksvc/events -p '{ "metadata" : { "annotations" : { "app.openshift.io/connects-to" : "iot-psql" } }'
 ----
 . Visit your link:{openshift-host}/topology/ns/{namespace}/buildconfigs[OpenShift Project Build Configs, window="_blank"] listing.
 . Verify that a BuildConfig name starting with *camel-k* is listed.
