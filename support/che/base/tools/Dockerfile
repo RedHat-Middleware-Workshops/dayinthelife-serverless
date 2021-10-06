@@ -9,7 +9,7 @@ RUN cd /tmp && git clone https://github.com/edenhill/kafkacat -b $KAFKACAT_VERSI
 
 FROM registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:2.10-4
 
-ENV CAMELK_VERSION=1.5.0
+ENV CAMELK_VERSION=1.4.0
 ENV SKUPPER_VERSION=0.7.0
 ENV RHOAS_VERSION=0.30.0
 ENV TKN_VERSION=0.15.0
@@ -22,7 +22,7 @@ RUN wget https://github.com/skupperproject/skupper/releases/download/${SKUPPER_V
     -O - | tar -xz -C /usr/local/bin/
 
 # Install kamel
-RUN wget https://github.com/apache/camel-k/releases/download/v${CAMELK_VERSION}/camel-k-client-${CAMELK_VERSION}-linux-64bit.tar.gz \
+RUN wget https://mirror.openshift.com/pub/openshift-v4/clients/camel-k/${CAMELK_VERSION}/camel-k-client-${CAMELK_VERSION}-linux-64bit.tar.gz \
     -O - | tar -xz -C /usr/local/bin/ ./kamel
 
 # Install rhoas
