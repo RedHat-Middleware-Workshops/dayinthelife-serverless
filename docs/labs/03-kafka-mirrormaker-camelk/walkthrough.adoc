@@ -8,7 +8,7 @@
 :rhosak: Red Hat OpenShift Streams for Apache Kafka
 :rhoas: Red Hat OpenShift Application Services
 :cloud-console: https://console.redhat.com
-:codeready-project: FleurDeLune
+:codeready-project: InternationalInc
 
 // URLs
 :openshift-streams-url: https://console.redhat.com/beta/application-services/streams/kafkas
@@ -109,19 +109,19 @@ At this point your OpenShift Project will have the required details for applicat
 +
 [source,bash,subs="attributes+"]
 ----
-$ oc get KafkaConnection $(oc get KafkaConnection --no-headers -o custom-columns=NAME:.metadata.name -n {smartcity-central-namespace}) -n {smartcity-central-namespace} --template='{{.status.bootstrapServerHost}}'; echo
+oc get KafkaConnection $(oc get KafkaConnection --no-headers -o custom-columns=NAME:.metadata.name -n {smartcity-central-namespace}) -n {smartcity-central-namespace} --template='{{.status.bootstrapServerHost}}'; echo
 ----
 ** `{{smartcity-central-service-account-id}}`: replace with the id of the service account created by the `rhoas connect` command. You can obtain the value with the following command:
 +
 [source,bash,subs="attributes+"]
 ----
-$ oc get secret rh-cloud-services-service-account -n {smartcity-central-namespace} --template='{{index .data "client-id"}}' | base64 -d; echo
+oc get secret rh-cloud-services-service-account -n {smartcity-central-namespace} --template='{{index .data "client-id"}}' | base64 -d; echo
 ----
 ** Use the following command to replace all placeholders from the command line:
 +
 [source,bash,subs="attributes+"]
 ----
-$ sed -i "s/{{smartcity-central-bootstrap-server}}/$(oc get KafkaConnection $(oc get KafkaConnection --no-headers -o custom-columns=NAME:.metadata.name -n {smartcity-central-namespace}) -n {smartcity-central-namespace} --template='{{.status.bootstrapServerHost}}')/g" /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml && \
+  sed -i "s/{{smartcity-central-bootstrap-server}}/$(oc get KafkaConnection $(oc get KafkaConnection --no-headers -o custom-columns=NAME:.metadata.name -n {smartcity-central-namespace}) -n {smartcity-central-namespace} --template='{{.status.bootstrapServerHost}}')/g" /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml && \
   sed -i "s/{{smartcity-central-service-account-id}}/$(oc get secret rh-cloud-services-service-account -n {smartcity-central-namespace} --template='{{index .data "client-id"}}' | base64 -d)/g" /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml && \
   sed -i "s/{{user}}/{user-username}/g" /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml
 ----
@@ -182,7 +182,7 @@ In the file replace the `{{smartcity-central-bootstrap-server}}` with the bootst
 +
 [source,bash,subs="attributes+"]
 ----
-$ sed -i "s/{{smartcity-central-bootstrap-server}}/$(oc get KafkaConnection $(oc get KafkaConnection --no-headers -o custom-columns=NAME:.metadata.name -n {smartcity-central-namespace}) -n {smartcity-central-namespace} --template='{{.status.bootstrapServerHost}}')/g" /projects/{codeready-project}/projects/lab-02/tollstationeventconsumer.properties
+sed -i "s/{{smartcity-central-bootstrap-server}}/$(oc get KafkaConnection $(oc get KafkaConnection --no-headers -o custom-columns=NAME:.metadata.name -n {smartcity-central-namespace}) -n {smartcity-central-namespace} --template='{{.status.bootstrapServerHost}}')/g" /projects/{codeready-project}/projects/lab-02/tollstationeventconsumer.properties
 ----
 +
 Note that we use a Regex pattern to specify the topics to consume from: `^*.-toll-station-events`. This ensures that the route will consume from all the topics ending with `toll-station-events`. So if you add another edge deployment to the solution, its events will be consumed by the Camel Route, without the need to change the route itself.
@@ -191,8 +191,12 @@ Note that we use a Regex pattern to specify the topics to consume from: `^*.-tol
 +
 [source,bash,subs="attributes+"]
 ----
-$ cd /projects/{codeready-project}/projects/lab-02
-$ kamel run TollStationEventConsumer.java --namespace {smartcity-central-namespace}
+cd /projects/{codeready-project}/projects/lab-02
+----
++
+[source,bash,subs="attributes+"]
+----
+kamel run TollStationEventConsumer.java --namespace {smartcity-central-namespace}
 ----
 
 . As a result of the `kamel run` command, an image with the Camel Route is built and deployed on the OpenShift cluster. You can check the build progress by navigating to the link:https://console-openshift-console.{openshift-app-host}/k8s/ns/{smartcity-central-namespace}/builds[Builds view on the OpenShift Console]
@@ -216,7 +220,7 @@ $ oc scale deployment/image-generator -n {smartcity-edge-namespace} --replicas=1
 +
 [source,bash,subs="attributes+"]
 ----
-$ oc logs -f $(oc get pod -o custom-columns=POD:.metadata.name --no-headers -l camel.apache.org/integration=toll-station-event-consumer -n {smartcity-central-namespace}) -n {smartcity-central-namespace}
+oc logs -f $(oc get pod -o custom-columns=POD:.metadata.name --no-headers -l camel.apache.org/integration=toll-station-event-consumer -n {smartcity-central-namespace}) -n {smartcity-central-namespace}
 ----
 +
 After a couple of seconds you should see log statements with the payload of the consumed Kafka messages:
@@ -243,7 +247,7 @@ After a couple of seconds you should see log statements with the payload of the 
 +
 [source,bash,subs="attributes+"]
 ----
-$ oc exec $(oc get pods -o custom-columns=POD:.metadata.name --no-headers -l app=smartcity-db -n {smartcity-central-namespace}) -n {smartcity-central-namespace} -- bash -c 'psql -d $POSTGRESQL_DATABASE -U $POSTGRESQL_USER -c "SELECT * FROM toll_station_events;"'
+ oc exec $(oc get pods -o custom-columns=POD:.metadata.name --no-headers -l app=smartcity-db -n {smartcity-central-namespace}) -n {smartcity-central-namespace} -- bash -c 'psql -d $POSTGRESQL_DATABASE -U $POSTGRESQL_USER -c "SELECT * FROM toll_station_events;"'
 ----
 +
 Expect to see something like:
