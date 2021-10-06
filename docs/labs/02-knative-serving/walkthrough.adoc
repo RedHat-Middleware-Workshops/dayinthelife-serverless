@@ -203,27 +203,8 @@ Now you're familiar with the OpenShift Topology and existing services, and have 
 
 You build the API using Camel K and Quarkus.
 
-=== Configure an Integration Platform
-
-Your OpenShift environment has the link:https://camel.apache.org/camel-k/latest/architecture/operator.html[Camel K Operator, window="_blank"] pre-installed.
-
-The Camel K Operator provides an *Integration Platform* Custom Resource. This Custom Resource is used to configure Camel K behavior for your OpenShift Project.
-
-To configure an *Integration Platform*:
-
-. Navigate to your OpenShift Project link:{openshift-host}/topology/ns/{namespace}[Topology View, window="_blank"]
-. Use the view selector, at the top of the left navigation pane, to switch from  the *Developer* to *Administrator* view.
-. Expand the *Operators* section and select *Installed Operators*
 +
-image:images/05-operators-list.png[OpenShift Installed Operators View]
-. Click the *Integration Platform* link listed within the Camel K Operator. This will load the *Integration Platforms* screen.
-. Click the *Create Integration Platform* button on the *Integration Platforms* screen.
-. Accept the default values on the *Create Integration Platform* screen, and click *Create*.
-. You will be redirected to *Integration Platforms* screen, and should see your new *Integration Platform* listed.
-+
-image:images/06-integration-platform.png[Camel K Integration Platform]
-
-This *Integration Platform* will enable you to build and deploy Camel K applications, like the Parking Meters REST API!
+image:images/061-camel-scenario.png[Camel Scenario]
 
 === Define and Build the API
 
@@ -262,13 +243,13 @@ The first line of this file contains a `camel-k` directive. This directive defin
 ----
 rhoas kafka describe
 ----
-. Build and deploy the REST API as a serverless function:
+
 +
 [source,bash,role="copypaste",subs="attributes+"]
 ----
 cd projects/lab-01/
 ----
-
+. Build and deploy the REST API as a serverless function:
 +
 [source,bash,role="copypaste",subs="attributes+"]
 ----
@@ -310,6 +291,7 @@ oc exec $(oc get pods -o custom-columns=POD:.metadata.name --no-headers -l app=i
 +
 image:images/10-db-result.png[PostgreSQL Query Output]
 . Return to the link:{openshift-host}/topology/ns/{namespace}/graph[OpenShift Topology View, window="_blank"] and wait for the *meter-consumer* Pod to scale down to zero. You'll know this happened when the blue circle turns white.
+
 . In the CodeReady Workspaces terminal, send another HTTP POST request, and see the Pod scales back up to handle it:
 +
 [source,bash,role="copypaste",subs="attributes+"]
@@ -366,10 +348,14 @@ kamel run Sender.java
 . Go back to OpenShift Developer Console, and see if the pods has scaled up in order to serve the demands.
 
 
-. Go to the UI and view the updated result.
+. Stop the sender, and the Camel application will scale back down to zero after couple of minutes
+[source,bash,role="copypaste"]
+----
+kamel delete sender
+----
 
 [type=verification]
-Did it scale up?
+Did it scale up and down?
 
 [type=verificationFail]
 {standard-fail-text}
@@ -379,13 +365,5 @@ Did it scale up?
 [id="summary"]
 == Summary
 
-In this lab you successfully xxxx
+In this lab you successfully create and deploy a REST API that will ingest Parking Meter updates with simple Camel serverless integrations.
 You can now proceed to link:{next-lab-url}[Lab 2].
-
-[time=4]
-[id="further-reading"]
-== Notes and Further Reading
-
-* xxxx
-* xxxx
-* xxxx
