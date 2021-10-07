@@ -88,7 +88,17 @@ image::images/01-kafka-ready.png[Kafka instance in Ready state]
 
 {blank}
 
-It is time to create an account for application to connect to your new Kafka cluster.
+
+
+[type=verification]
+Were you able to successfully create the Kafka cluster?
+Next up, it is time to create an account for application to connect to your new Kafka cluster.
+
+[type=verificationFail]
+{standard-fail-text}
+
+
+
 
 [time=5]
 == Instance Connection Details
@@ -121,6 +131,13 @@ The service account *Client Secret* is only showed once in this dialog. If you d
 ====
 
 You are now ready to test the connectivity to your cluster.
+
+[type=verification]
+Were you able to successfully obtain the Connection Details?
+
+[type=verificationFail]
+{standard-fail-text}
+
 
 [time=5]
 == Verify Connectivity
@@ -188,5 +205,11 @@ kafkacat -b $BOOTSTRAP_SERVER \
 image::images/04-kafkacat-metadata.png[Kafkacat Metdata Listing]
 
 {blank}
+
+[type=verification]
+Through the connection we created. Were you able to successfully view kafka cluster detail from another cloud using kafkacat?
+
+[type=verificationFail]
+{standard-fail-text}
 
 Congratulations! You successfully created a new Kafka cluster to send and receive events. You're now ready to move onto the next lab!
