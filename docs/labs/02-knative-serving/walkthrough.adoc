@@ -247,10 +247,13 @@ cd projects/lab-01/
 ----
 kamel run MeterConsumer.java --namespace {namespace}
 ----
-. Visit your link:{openshift-host}/topology/ns/{namespace}/buildconfigs[OpenShift Project Build Configs, window="_blank"] listing.
-. Verify that a BuildConfig name starting with *camel-k* is listed.
+. Give it a couple of minutes. In developer view console, A new Camel serverless application will apear.
 +
-image:images/08-camelk-build.png[Camel K Build Config]
+image:images/08-camelk-serverless-up.png[Camel K serverless APP]
+
+. Wait for another minute, the serverless application will scale down to zero. In developer view console, the blue circle will disaapear and eventually disappear. 
++
+image:images/08-camelk-serverless-down.png[Camel K serverless APP]
 
 === Test the REST API
 . Return to the link:{openshift-host}/topology/ns/{namespace}/graph[OpenShift Topology View, window="_blank"] and wait for the *meter-consumer* Pod to start.
@@ -300,12 +303,6 @@ http://meter-consumer-{namespace}.{openshift-app-host}/meter/status \
       }
 '
 ----
-
-[type=verification]
-Were you able to successfully deploy, and autoscale your application?
-
-[type=verificationFail]
-{standard-fail-text}
 
 
 
