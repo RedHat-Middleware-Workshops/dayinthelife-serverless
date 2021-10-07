@@ -147,7 +147,7 @@ export TOKEN=YOUR_TOKEN_GOES_HERE
 rhoas login --token $TOKEN
 ----
 
-. Set your Managed Kafka as the working context. This command will provide a prompt to choose your Kafka cluster:
+. Set your Managed Kafka as the working context. This command will provide a **prompt to choose your Kafka cluster:
 +
 [source,bash,subs="attributes+"]
 ----
@@ -189,7 +189,7 @@ oc describe kafkaconnection -n {namespace}
 
 Your now ready to deploy applications that connect to your Managed Kafka cluster.
 
-[time=10]
+[time=15]
 [id="Serving with API"]
 == Knative Serving, Camel K, & REST API
 
@@ -313,7 +313,7 @@ Did it scale up and down?
 {standard-fail-text}
 
 
-[time=5]
+[time=1]
 [id="summary"]
 == Summary
 

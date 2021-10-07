@@ -56,7 +56,7 @@ image::images/00-kafka-streams-home.png[OpenShift {product-name} UI]
 
 Now that you have a cloud services account, you can start creating resources.
 
-[time=5]
+[time=10]
 == Creating a Kafka Instance
 
 . Click the *Create Kafka instance* button.
@@ -139,7 +139,7 @@ Were you able to successfully obtain the Connection Details?
 {standard-fail-text}
 
 
-[time=5]
+[time=10]
 == Verify Connectivity
 
 [type=taskResource]
