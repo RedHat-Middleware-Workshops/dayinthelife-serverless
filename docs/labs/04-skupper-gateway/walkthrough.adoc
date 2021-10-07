@@ -21,7 +21,7 @@
 [id='skupper-gateway']
 = {title}
 
-This labs introduces Skupper to create a Virtual Applications Network and create connections across multiple clouds.
+This labs introduces Skupper to create a Virtual Applications Network (also known as a service network) and create connections across multiple clouds.
 
 *Overview*
 
@@ -72,7 +72,7 @@ A quick reminder before you get started. Use the following credentials to login 
 [time=5]
 == Deploy the frontend
 
-You team has already created the first part of your system, the frontend application for Patient Portal. It is time to deploy the application in AWS that will become our _public_ cloud environment.
+Your team has already created the first part of your system, the frontend application for Patient Portal. It is time to deploy the application in AWS that will become our _public_ cloud environment.
 
 === Access the Terminal
 
@@ -101,7 +101,7 @@ You are now ready to start working on this newly created namespace.
 
 [NOTE]
 ====
-The terminal have installed all the commands you will be using in this lab.
+All the commands you will be using in this lab are available from the terminal.
 ====
 
 [type=verification]
@@ -115,13 +115,13 @@ Were you able to start the terminal?
 Time to start deploying the application.
 
 1. Access the developer view console by navigating to the link:{openshift-host}/topology/ns/{frontend-namespace}[AWS developer console, window="_blank"]
-2. Click on *Container Iamge*
+2. Click on *Container Image*
 +
 image:images/101-container-image.png[Container Image]
 3. We will deploy the image from the development team. Fill in `quay.io/ssorj/patient-portal-frontend` in the *Image name from external registry* section. Click the *Create* button to start the deployment.
 +
 image:images/102-image-name.png[Image Name]
-4. OpenShift will start the deployment. It will take some moments to get to the running state. You will notice it is successful when it turns the surrounding cirle into _dark blue_.
+4. OpenShift will start the deployment. It will take some moments to get to the running state. You will notice it is successful when it turns the surrounding circle into _dark blue_.
 5. Click the _Open URL_ button to access the web application.
 +
 image:images/103-topology-view.png[Topology View]
@@ -145,7 +145,7 @@ AWS will be considered our _public_ cloud. So here we will create our public acc
 This process will install the Skupper router and service controller in the current namespace. 
 
 1. Get back to the terminal tab
-2. To initialize Skupper in this namespace you will need to issue the following comand in the terminal window:
+2. To initialize Skupper in this namespace you will need to issue the following command in the terminal window:
 +
 [source,bash,subs="attributes+"]
 ----
@@ -156,14 +156,15 @@ skupper init --console-auth unsecured
 +
 [NOTE]
 ====
-Skupper does not need admin rights in the cluster as it is using only ConfigMaps and Secrets. We will use the unsecured console for convience of this lab. 
+* Skupper does not need admin rights in the cluster as it is using only ConfigMaps and Secrets. 
+* We will use the unsecured console for convenience of this lab. 
 ====
 +
 You should see a message like the following one.
 +
 [,bash]
 ----
-Skupper is now installed in namespace 'user1-patient-front'.  Use 'skupper status' to get more information.
+Skupper is now installed in the 'user1-patient-front' namespace.  Use 'skupper status' to get more information.
 ----
 3. Wait a few moments for the Skupper pods to start. Check they are running with the following command.
 +
@@ -314,11 +315,11 @@ image:images/300-console-dashboard.png[Dashboard]
 +
 image:images/301-create-payment.png[Dashboard]
 
-4. This will start the pyament processor in your namespace.
+4. This will start the payment processor in your namespace.
 
 === Deploy the database
 
-1. Click the *+Add* tab in the top left side of the console to start again the process to deploy now the database.
+1. Click the *+Add* tab in the top left side of the console to start the process to deploy the database.
 +
 image:images/302-console-add.png[Dashboard]
 
@@ -561,7 +562,7 @@ skupper-router-local      ClusterIP   172.30.239.78    <none>        5671/TCP   
 +
 [NOTE]
 ====
-There is a service accesible in the namespace for the _database_ and the _payment-processor_ backend services.
+There are accessible services in the namespace for the _database_ and the _payment-processor_ backend services.
 ====
 
 2. Now check the pods: 
