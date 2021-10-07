@@ -129,7 +129,7 @@ oc get secret rh-cloud-services-service-account -n {smartcity-central-namespace}
 +
 [source,bash,subs="attributes+"]
 ----
-$ oc create -f /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml -n {smartcity-central-namespace}
+oc create -f /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml -n {smartcity-central-namespace}
 ----
 . Follow the deployment of the Kafka MirrorMaker instance in the OpenShift console Topology view of the {smartcity-central-namespace} project. After a couple of seconds you should see that the Mirrormaker pod deployed successfully:
 +
