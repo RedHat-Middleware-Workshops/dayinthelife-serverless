@@ -59,7 +59,7 @@ image:images/smartcity-central-topology.png[SmartCity Central Topology]
 [time=10]
 == Install Kafka MirrorMaker
 
-Kafka MirrorMaker 2, part of the Apache Kafka ecosystem, is a tool to replicate or mirror Kafka topics between clusters. It can be used to provide high availability and disaster recovery for Kafka clusters, but also to aggregate data from several disparate kafka clusters into a central cluster.
+Kafka MirrorMaker 2, part of the Apache Kafka ecosystem, is a tool to replicate or mirror Kafka topics between clusters. It can be used to provide high availability and disaster recovery for Kafka clusters, but also to aggregate data from several disparate Kafka clusters into a central cluster.
 
 In this lab you will use Kafka MirrorMaker to aggregate the data in the edge Kafka clusters into a central Kafka cluster. As central Kafka cluster you use the managed Kafka instance you created in the previous lab.
 
@@ -69,7 +69,7 @@ Kafka MirrorMaker 2 can be installed using the AMQ Streams operator, which has b
 
 In the previous lab you used the `rhoas` CLI to connect your managed Kafka cluster. For this lab some of these steps need to be repeated because you are working in another namespace of the OpenShift cluster.
 
-. If you finished the previous lab, you should be logged in to link:console.redhat.com[]. You can verify this with the `rhoas --whoami` command.
+. If you finished the previous lab, you should be logged in to link:https://console.redhat.com[console.redhat.com]. You can verify this with the `rhoas --whoami` command.
 +
 [source,bash,subs="attributes+"]
 ----
@@ -131,11 +131,11 @@ oc get secret rh-cloud-services-service-account -n {smartcity-central-namespace}
 ----
 $ oc create -f /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml -n {smartcity-central-namespace}
 ----
-. Follow the deployment of the Kafka MirrorMaker instance in the OpenShift console Topology view of the {smartcity-central-namespace} project. After a couple of seconds you should see that the Mirrormaker pod deployed successfully:
+. Follow the deployment of the Kafka MirrorMaker instance in the link:{openshift-host}/topology/ns/{smartcity-central-namespace}[Topology View, window="_blank"] of the {smartcity-central-namespace} project. After a couple of seconds you should see that the MirrorMaker pod deployed successfully:
 +
 image:images/smartcity-central-topology-mirrormaker.png[SmartCity Central Topology with MirrorMaker]
 
-. Kafka MirrorMaker created a number of topics in the managed Kafka server. You can verify this in the *Topics* pane of your Kafka cluster in the link:{openshift-streams-url}[OpenShift Streams Console, window="_blank"].
+. Kafka MirrorMaker created a number of topics in the managed Kafka cluster. You can verify this in the *Topics* pane of your Kafka cluster in the link:{openshift-streams-url}[OpenShift Streams Console, window="_blank"].
 +
 image::images/managed-kafka-mirrormakers-topic.png[Managed Kafka Topics]
 +
@@ -299,7 +299,7 @@ Expect to see something like:
 
 == Summary
 
-In this lab you successfully xxxx
+In this lab you successfully moved data from one Kafka cluster to another running on another cloud using Kafka MirrorMaker.
 
 [time=4]
 [id="further-reading"]
