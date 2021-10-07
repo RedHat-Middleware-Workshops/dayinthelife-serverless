@@ -153,12 +153,6 @@ rhoas login --token $TOKEN
 ----
 rhoas kafka use
 ----
-. Verify that the `{meter-topic}` exists in the output from this command:
-+
-[source,bash,subs="attributes+"]
-----
-rhoas kafka topic list
-----
 . Connect your Managed Kafka and OpenShift Project:
 +
 [source,bash,subs="attributes+"]
@@ -232,24 +226,22 @@ The *MeterConsumer.java* file defines a link:https://camel.apache.org/manual/lat
 
 The first line of this file contains a `camel-k` directive. This directive defines options that are used by Camel K when it builds and deploys the Camel Route. For example, it references the *openapi-spec.yaml* file to define the REST API endpoint, and the *rh-cloud-services-service-account* Secret to connect to your Managed Kafka cluster.
 
-// . View the _meter.properties_ and create a *ConfigMap* that contains it:
-// [source,bash,role="copypaste"]
-// ----
-// oc create configmap amqp-properties --from-file $CHE_PROJECTS_ROOT/dil-serverless/lab-01/meters.properties -n {namespace}
-// ----
-. Open the *meters.properties* file and replace the *camel.component.kafka.brokers* value with your Managed Kafka bootstrap server URL. The URL can be obtained via the UI, or CLI command:
+
+. Open the *meters.properties* file and replace the *camel.component.kafka.brokers* value with your Managed Kafka bootstrap server URL. 
+
+. The Kafka bootstrap server URL can be obtained via the UI, or CLI command:
 +
 [source,bash,role="copypaste",subs="attributes+"]
 ----
 rhoas kafka describe
 ----
 
+. Build and deploy the REST API as a serverless function:
 +
 [source,bash,role="copypaste",subs="attributes+"]
 ----
 cd projects/lab-01/
 ----
-. Build and deploy the REST API as a serverless function:
 +
 [source,bash,role="copypaste",subs="attributes+"]
 ----
@@ -316,43 +308,6 @@ Were you able to successfully deploy, and autoscale your application?
 {standard-fail-text}
 
 
-[time=10]
-[id="Scaling up"]
-== Scaling up with Serving
-
-=== Starting the function with scaling options
-
- Knative Pod Autoscaler (KPA)
-* Part of the Knative Serving core and enabled by default once Knative Serving is installed.
-* Does not support CPU-based autoscaling.
-
- Horizontal Pod Autoscaler (HPA)
-* Not part of the Knative Serving core, and must be enabled after Knative Serving installation.
-* Does not support scale to zero functionality.
-* Supports CPU-based autoscaling.
-
-
-. In CodeReady, let run the Meter Consumer again with the new scaling setting using Camel K traits. It configure options when running the integration as Knative service.
-
-[source,bash,role="copypaste"]
-----
-kamel run MeterConsumer.java -t knative-service.min-scale=0 -t knative-service.max-scale=5 -t knative-service.autoscaling-metric=concurrency -t knative-service.autoscaling-class=kpa.autoscaling.knative.dev -t knative-service.autoscaling-target=70
-----
-
-. Let's run the application with larger traffics
-[source,bash,role="copypaste"]
-----
-kamel run Sender.java
-----
-
-. Go back to OpenShift Developer Console, and see if the pods has scaled up in order to serve the demands.
-
-
-. Stop the sender, and the Camel application will scale back down to zero after couple of minutes
-[source,bash,role="copypaste"]
-----
-kamel delete sender
-----
 
 [type=verification]
 Did it scale up and down?
