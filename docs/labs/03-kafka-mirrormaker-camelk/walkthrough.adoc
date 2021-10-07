@@ -73,7 +73,7 @@ In the previous lab you used the `rhoas` CLI to connect your managed Kafka clust
 +
 [source,bash,subs="attributes+"]
 ----
-$ rhoas --whoami
+rhoas --whoami
 ----
 +
 If the output of the command says that you are not logged in, refer to the instructions in the previous lab to log in.
@@ -82,7 +82,7 @@ If the output of the command says that you are not logged in, refer to the instr
 +
 [source,bash,subs="attributes+"]
 ----
-$ rhoas cluster connect --token $TOKEN --namespace {smartcity-central-namespace}
+rhoas cluster connect --token $TOKEN --namespace {smartcity-central-namespace}
 ----
 +
 At this point your OpenShift Project will have the required details for applications to connect to your Managed Kafka. These details include:
@@ -90,6 +90,12 @@ At this point your OpenShift Project will have the required details for applicat
 * A *KafkaConnection* Custom Resource (CR)
 * A *rh-cloud-services-service-account* Secret. This contains a SASL Client ID and Client Secret.
 * A *rh-cloud-services-accesstoken-cli* Secret. This contains the {rhoas} API Token.
+
+[type=verification]
+Were you able to successfully connect to the managed Kafka cluster?
+
+[type=verificationFail]
+{standard-fail-text}
 
 === Install Kafka MirrorMaker
 
@@ -141,32 +147,17 @@ image::images/managed-kafka-mirrormakers-topic.png[Managed Kafka Topics]
 +
 Notice the *edge-toll-station-events* topic, which is the replica of the *toll-station-events* topic on the edge Kafka cluster.
 
+
+[type=verification]
+Were you able to install Kafka MirrorMaker successfully?
+
+[type=verificationFail]
+{standard-fail-text}
+
 [time=10]
 == Integration with Camel K
 
 The next step is consuming the replicated data from the managed Kafka cluster for further processing. In this lab, you are going to use a Camel K integration to consume the messages from the managed Kafka cluster and store them in a PostgreSQL database.
-
-=== Configure an Integration Platform
-
-Your OpenShift environment has the link:https://camel.apache.org/camel-k/latest/architecture/operator.html[Camel K Operator, window="_blank"] pre-installed.
-
-The Camel K Operator provides an *Integration Platform* Custom Resource. This Custom Resource is used to configure Camel K behavior for your OpenShift namespace.
-
-To configure an *Integration Platform*:
-
-. Navigate to your OpenShift project link:{openshift-host}/topology/ns/{smartcity-central-namespace}[Topology View, window="_blank"]
-. Use the view selector, at the top of the left navigation pane, to switch from  the *Developer* to *Administrator* view.
-. Expand the *Operators* section and select *Installed Operators*
-+
-image:images/installed-operators.png[OpenShift Installed Operators View]
-. Click the *Integration Platform* link listed within the Camel K Operator. This will load the *Integration Platforms* screen.
-. Click the *Create Integration Platform* button on the *Integration Platforms* screen.
-. Accept the default values on the *Create Integration Platform* screen, and click *Create*.
-. You will be redirected to *Integration Platforms* screen, and should see your new *Integration Platform* listed.
-+
-image:images/integration-platform.png[Camel K Integration Platform]
-
-This *Integration Platform* will enable you to build and deploy Camel K applications.
 
 === Deploy the Camel K Integration
 
@@ -205,6 +196,12 @@ kamel run TollStationEventConsumer.java --namespace {smartcity-central-namespace
 +
 image::images/camel-k-pod.png[Camel K Integration Pod]
 
+[type=verification]
+Were you able to run the TollStationEventConsumer Camel K application successfully?
+
+[type=verificationFail]
+{standard-fail-text}
+
 == Test the solution
 
 At this point, all the components of the solution are in place. You can now test by generating images on the edge, which produces toll station events on the edge Kafka cluster. These messages are replicated to the central managed Kafka cluster, and consumed by the Camel K integration, which inserts the payload in the PostgreSQL database.
@@ -213,7 +210,7 @@ At this point, all the components of the solution are in place. You can now test
 +
 [source,bash,subs="attributes+"]
 ----
-$ oc scale deployment/image-generator -n {smartcity-edge-namespace} --replicas=1
+oc scale deployment/image-generator -n {smartcity-edge-namespace} --replicas=1
 ----
 
 . Check the logs of the *toll-station-event-consumer* pod.
@@ -295,16 +292,13 @@ Expect to see something like:
 (643 rows)
 ----
 
+[type=verification]
+Were you able to see messages  replicated to the central managed Kafka cluster?
 
+[type=verificationFail]
+{standard-fail-text}
 
 == Summary
 
 In this lab you successfully moved data from one Kafka cluster to another running on another cloud using Kafka MirrorMaker.
 
-[time=4]
-[id="further-reading"]
-== Notes and Further Reading
-
-* xxxx
-* xxxx
-* xxxx
