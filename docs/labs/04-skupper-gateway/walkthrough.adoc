@@ -94,6 +94,23 @@ image:images/001-terminal-loading.png[Loading Terminal]
 ----
 oc new-project {frontend-namespace}
 ----
++
+{blank}
++
+You should see a similar output: 
++
+[,bash,subs="attributes+"]
+----
+Now using project "{frontend-namespace}" on server "https://172.30.0.1:443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app rails-postgresql-example
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=k8s.gcr.io/serve_hostname
+----
 
 {blank}
 
@@ -118,7 +135,7 @@ Time to start deploying the application.
 2. Click on *Container Image*
 +
 image:images/101-container-image.png[Container Image]
-3. We will deploy the image from the development team. Fill in `quay.io/ssorj/patient-portal-frontend` in the *Image name from external registry* section. Click the *Create* button to start the deployment.
+3. We will deploy the image from the development team. Fill in `quay.io/redhatintegration/patient-portal-frontend` in the *Image name from external registry* section. Click the *Create* button to start the deployment.
 +
 image:images/102-image-name.png[Image Name]
 4. OpenShift will start the deployment. It will take some moments to get to the running state. You will notice it is successful when it turns the surrounding circle into _dark blue_.
@@ -145,7 +162,13 @@ AWS will be considered our _public_ cloud. So here we will create our public acc
 This process will install the Skupper router and service controller in the current namespace. 
 
 1. Get back to the terminal tab
-2. To initialize Skupper in this namespace you will need to issue the following command in the terminal window:
+2. First we need to update the frontend environment variables to access the database service with the hostname exposed by skupper. Execute the following command:
++
+[source,bash,subs="attributes+"]
+----
+oc set env deployment/patient-portal-frontend DATABASE_SERVICE_HOST=database
+----
+3. Now, to initialize Skupper in this namespace you will need to issue the following command in the terminal window:
 +
 [source,bash,subs="attributes+"]
 ----
@@ -166,7 +189,7 @@ You should see a message like the following one.
 ----
 Skupper is now installed in the 'user1-patient-front' namespace.  Use 'skupper status' to get more information.
 ----
-3. Wait a few moments for the Skupper pods to start. Check they are running with the following command.
+4. Wait a few moments for the Skupper pods to start. Check they are running with the following command.
 +
 [source,bash,subs="attributes+"]
 ----
@@ -184,7 +207,7 @@ patient-portal-frontend-6fc9cdc58d-v6qbh      1/1     Running   0          97m
 skupper-router-7449bd7b4-8cnk9                1/1     Running   0          6m54s
 skupper-service-controller-78bc5b6cb6-bqd4x   1/1     Running   0          6m52s
 ----
-4. Check the Skupper status with the following command: 
+5. Check the Skupper status with the following command: 
 +
 [source,bash]
 ----
@@ -200,11 +223,11 @@ You should see an output similar to the following:
 Skupper is enabled for namespace "{frontend-namespace}" in interior mode. It is not connected to any other sites. It has no exposed services.
 The site console url is:  https://skupper-user1-patient-front.{openshift-app-host}
 ----
-5. Copy and paste the console url in a new browser tab.
-6. This is the Skupper console. Click on the *Sites* tab to check this site connectivity.
+6. Copy and paste the console url in a new browser tab.
+7. This is the Skupper console. Click on the *Sites* tab to check this site connectivity.
 +
 image:images/200-skupper-console.png[Skupper Console]
-7. Your site {frontend-namespace} should be showing here.
+8. Your site {frontend-namespace} should be showing here.
 +
 image:images/201-skupper-site-frontend.png[Skupper Sites]
 
@@ -264,7 +287,7 @@ metadata:
 type: kubernetes.io/tls
 ----
 +
-{blank}
+4. Save the content of this file into a file in your local computer. We will be using this in the future.
 +
 [IMPORTANT]
 ====
@@ -285,6 +308,11 @@ Time to move to the private cloud running on Azure. This will be considered the 
 === Access the terminal in Azure
 
 1. Access the environment namespace by navigating to the link:{azure-console}/terminal[Azure terminal console, window="_blank"] in a new browser tab.
++
+[NOTE]
+====
+This is a new cluster, to make a clear distinction you will need to use a different password for this OpenShift Console and Terminal. Your username is the same `{user-username}` and the password is `*{azure-password}*`
+====
 
 2. Wait for the terminal to load, it might take a couple minutes.
 +
@@ -311,7 +339,7 @@ Were you able to create the namespace?
 +
 image:images/300-console-dashboard.png[Dashboard]
 
-3. Type in the payment processor container image name: `quay.io/ssorj/patient-portal-payment-processor` and then click *Create*.
+3. Type in the payment processor container image name: `quay.io/redhatintegration/patient-portal-payment-processor` and then click *Create*.
 +
 image:images/301-create-payment.png[Dashboard]
 
@@ -325,7 +353,7 @@ image:images/302-console-add.png[Dashboard]
 
 2. Click on the *Container Image* card button.
 
-3. Type in the database container image name: `quay.io/ssorj/patient-portal-database` and then click on *Create*.
+3. Type in the database container image name: `quay.io/redhatintegration/patient-portal-database` and then click on *Create*.
 +
 image:images/301-create-database.png[Dashboard]
 
@@ -346,7 +374,14 @@ Do you see both the database and the payment processor deployment?
 
 1. Get back to the link:{azure-console}/terminal[Azure terminal console, window="_blank"].
 
-2. Initalize Skupper in the namespace by running the following command:
+2. Switch to the working project if you haven't
++
+[source,bash,subs="attributes+"]
+----
+oc project {backend-namespace}
+----
+
+3. Initalize Skupper in the namespace by running the following command:
 +
 [source,bash,subs="attributes+"]
 ----
@@ -367,9 +402,9 @@ You should see an output similar to the following:
 Skupper is now installed in namespace '{backend-namespace}'.  Use 'skupper status' to get more information.
 ----
 
-3. Wait for the deployments to finish and be in `Running` state.
+4. Wait for the deployments to finish and be in `Running` state.
 
-4. Check the Skupper statust:
+5. Check the Skupper statust:
 +
 [source,bash,subs="attributes+"]
 ----
@@ -472,7 +507,7 @@ Are both services properly configured?
 +
 image:images/500-add-resource.png[Add Resources]
 
-4. Post the file you saved before in the new editor. Click *Create*.
+4. Paste the file you saved before in the new editor. Click *Create*.
 +
 [IMPORTANT]
 ====
@@ -483,7 +518,7 @@ image:images/501-save-secret-azure.png[Add Resources]
 
 === Check the connections
 
-1. Get back to the link:https://skupper-{frontend-namespace}.{openshift-app-host}[Skupper console] and refresh the page.
+1. Get back to the link:https://skupper-{frontend-namespace}.{openshift-app-host}[Skupper console, window="_blank"] and refresh the page.
 
 2. You should be able to see now that the backend cluster is connected to the frontend and that traffic is flowing from one cluster to another.
 +
@@ -506,7 +541,7 @@ Do you see both of your namespaces in the Skupper Console?
 * link:http://patient-portal-frontend-{frontend-namespace}.{openshift-app-host}[Patient Portal application, window="_blank"]
 ****
 
-1. Get back to the link:http://patient-portal-frontend-{frontend-namespace}.{openshift-app-host}[Patient Portal application] tab.
+1. Get back to the link:http://patient-portal-frontend-{frontend-namespace}.{openshift-app-host}[Patient Portal application, window="_blank"] tab.
 
 2. Hit Refresh.
 
