@@ -12,7 +12,7 @@
 
 // URLs
 :openshift-streams-url: https://console.redhat.com/beta/application-services/streams/kafkas
-:next-lab-url: https://tutorial-web-app-webapp.{openshift-app-host}/tutorial/dayinthelife-streaming.git-labs-02-/
+:next-lab-url: https://tutorial-web-app-webapp.{openshift-app-host}/tutorial/dayinthelife-serverless.git-labs-03-kafka-mirrormaker-camelk/
 :codeready-url: http://codeready-codeready.{openshift-app-host}/
 
 [id='knative-serving-camel-k']
@@ -318,4 +318,4 @@ Did it scale up and down?
 == Summary
 
 In this lab you successfully create and deploy a REST API that will ingest Parking Meter updates with simple Camel serverless integrations.
-You can now proceed to link:{next-lab-url}[Lab 2].
+You can now proceed to link:{next-lab-url}[Lab 3].
