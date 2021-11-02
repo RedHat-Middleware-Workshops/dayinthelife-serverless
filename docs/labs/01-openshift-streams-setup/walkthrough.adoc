@@ -142,7 +142,7 @@ Follow these steps to provide your new Service Account with broad permissions:ap
 +
 image::images/04-kafka-permissions.png[Kafka instance permissions]
 . Click the *Manage access* button. A dialog is displayed.
-. Select your Service Account in th *Account* dropdown.
+. Select *All accounts* from the *Account* dropdown.
 . Click *Next*. A dialog containing *Review existing permissions* and *Assign permissions* sections is displayed.
 . Configure the permissions as shown in the *Assign permissions* section of the dialog.
 +
@@ -153,7 +153,7 @@ image::images/07-kafka-assigned-permissions.png[Kafka permissions assigned]
 +
 [NOTE]
 ====
-The access rules assigned during this lab are very permissive. In production you should provide a Service Account with access to specific resources, and avoid using wildcards (`*`) if possible.
+The access rules assigned during this lab are very permissive. In production you should provide a specific Service Account with access to specific resources, and avoid using the *All accounts* and wildcards (`*`) as much as possible.
 ====
 
 You are now ready to test the connectivity to your cluster.
