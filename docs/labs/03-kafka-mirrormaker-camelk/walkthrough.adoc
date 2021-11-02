@@ -163,6 +163,12 @@ The next step is consuming the replicated data from the managed Kafka cluster fo
 
 . Navigate to your workspace in link:{codeready-url}[CodeReady Workspaces, window="_blank"].
 . Expand the *projects/lab-02* folder.
+. Deploy the Camel K IntegrationPlatform Custom Resource in the {smartcity-central-namespace} namespace.
++
+[source,bash,subs="attributes+"]
+----
+oc create -f /projects/{codeready-project}/projects/lab-02/camelk-integrationplatform.yml -n {smartcity-central-namespace}
+----
 . Open the *TollStationEventConsumer.java* file. +
 The *TollStationEventConsumer.java* file defines a Camel route using the Java Camel DSL. The route consumes from the Kafka topic defined by the property `consumer.topic`, and inserts the content of the message in the PostgresSQL database. +
 The first line of the file contains a _camel-k directive_. This directive defines options that are used by Camel K when it builds and deploys the Camel Route. For example, it points to the *tollstationeventconsumer.properties* file as application properties, and the *rh-cloud-services-service-account* Secret to connect to the managed Kafka cluster.
