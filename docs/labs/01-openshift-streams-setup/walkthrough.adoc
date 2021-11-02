@@ -101,7 +101,7 @@ Next up, it is time to create an account for application to connect to your new 
 
 
 [time=5]
-== Instance Connection Details
+== Instance Connection Details & Permissions
 
 Connecting to a {product-name} instance requires the *Bootstrap server URL* and
 the *Client ID* and *Client Password* associated with a *Service Account*.
@@ -128,6 +128,32 @@ image::images/03-kafka-credentials.png[Kafka Service Account Details]
 [NOTE]
 ====
 The service account *Client Secret* is only showed once in this dialog. If you didn't capture the value, you will need to regenerate the credentials for the service account.
+====
+
+=== Set Service Account Permissions
+
+{product-name} is secure by default. Administrators must grant resource access to Service Accounts.
+
+Follow these steps to provide your new Service Account with broad permissions:app-name: 
+
+. Navigate to the *Kafka Instances* page.
+. Click on the name of your Kafka instance to view the instance *Dashboard*.
+. Select the *Access* tab. The permissions configured for this Kafka instance and Service Accounts are displayed.
++
+image::images/04-kafka-permissions.png[Kafka instance permissions]
+. Click the *Manage access* button. A dialog is displayed.
+. Select your Service Account in th *Account* dropdown.
+. Click *Next*. A dialog containing *Review existing permissions* and *Assign permissions* sections is displayed.
+. Configure the permissions as shown in the *Assign permissions* section of the dialog.
++
+image::images/05-kafka-assign-permissions.png[Kafka permissions being assigned]
+. Click *Save*. The new permissions should be reflected on the *Access* page.
++
+image::images/07-kafka-assigned-permissions.png[Kafka permissions assigned]
++
+[NOTE]
+====
+The access rules assigned during this lab are very permissive. In production you should provide a Service Account with access to specific resources, and avoid using wildcards (`*`) if possible.
 ====
 
 You are now ready to test the connectivity to your cluster.
