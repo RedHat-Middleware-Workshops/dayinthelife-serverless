@@ -1,4 +1,4 @@
-// camel-k: language=java open-api=openapi-spec.yaml dependency=camel-openapi-java dependency=mvn:org.postgresql:postgresql:42.2.10 property=meters.properties resource=secret:pg-login resource=secret:rh-cloud-services-service-account
+// camel-k: language=java open-api=openapi-spec.yaml dependency=camel-openapi-java dependency=mvn:org.postgresql:postgresql:42.2.10 property=file:meters.properties secret=pg-login secret=rh-cloud-services-service-account
 
 import org.apache.camel.builder.RouteBuilder;
 
