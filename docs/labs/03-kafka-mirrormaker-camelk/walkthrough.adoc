@@ -29,6 +29,22 @@ In this lab you will set up (part of) the central datahub. Each toll station (wh
 
 <TODO: image of overall architecture>
 
+[type=walkthroughResource,serviceName=codeready]
+.Red Hat CodeReady Workspaces
+****
+* link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
+****
+[type=walkthroughResource]
+.Red Hat OpenShift Developer Console
+****
+* link:{openshift-host}/topology/ns/{namespace}[Topology View, window="_blank"]
+****
+[type=walkthroughResource]
+.Red Hat OpenShift Application Services
+****
+* link:{openshift-streams-url}[OpenShift Streams for Apache Kafka, window="_blank"]
+****
+
 :sectnums:
 
 == Edge walkthrough
