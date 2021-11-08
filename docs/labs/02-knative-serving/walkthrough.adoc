@@ -128,6 +128,13 @@ Your OpenShift environment has been pre-configured with the {rhoas} Operator. Th
 
 Embed your Managed Kafka connection details OpenShift Project:
 
+. Login using the OpenShift CLI:
++
+[source,bash,subs="attributes+"]
+----
+oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true
+----
+
 . Obtain a token from link:{cloud-console}/openshift/token[console.redhat.com/openshift/token] using the *Load Token* button. The Operator will use this to communicate the {rhoas} APIs.
 +
 image:images/07-openshift-token.png[Red Hat Cloud Token]
@@ -168,12 +175,6 @@ At this point your OpenShift Project will have the required details for applicat
 
 Verify these resources exist using the following commands:
 
-. Login using the OpenShift CLI:
-+
-[source,bash,subs="attributes+"]
-----
-oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true
-----
 . List the Secrets and verify the list contains *rh-cloud-services-service-account* and *rh-cloud-services-accesstoken-cli*:
 +
 [source,bash,subs="attributes+"]
