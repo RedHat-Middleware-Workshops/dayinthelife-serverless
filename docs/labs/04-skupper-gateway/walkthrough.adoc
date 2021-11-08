@@ -252,6 +252,8 @@ A claim token can be restricted by:
 ** usage - prevents creating multiple links from a single token.
 ====
 +
+{blank}
++
 All inter-site traffic is protected by mutual TLS using a private, dedicated certificate authority (CA). A claim token is not a certificate, but is securely exchanged for a certificate during the linking process. By implementing appropriate restrictions (for example, creating a single-use claim token), you can avoid the accidental exposure of certificates.
 
 * **Cert token**
