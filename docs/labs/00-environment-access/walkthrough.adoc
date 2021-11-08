@@ -42,6 +42,8 @@ CodeReady Workspaces is included with your OpenShift subscription and is availab
 * *password:* `{user-password}`
 ****
 
+:sectnums:
+
 [time=5]
 == Accessing a Development Environment
 

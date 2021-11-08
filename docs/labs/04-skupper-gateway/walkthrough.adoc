@@ -67,7 +67,7 @@ A quick reminder before you get started. Use the following credentials to login 
 * *password:* `{azure-password}`
 ****
 
-:secnums:
+:sectnums:
 
 [time=5]
 == Deploy the frontend
@@ -224,7 +224,7 @@ Skupper is enabled for namespace "{frontend-namespace}" in interior mode. It is 
 The site console url is:  https://skupper-user1-patient-front.{openshift-app-host}
 ----
 6. Copy and paste the console url in a new browser tab.
-7. This is the Skupper console. Click on the *Sites* tab to check this site connectivity.
+7. This is the Skupper console. Click on the *Network* tab to check this site connectivity.
 +
 image:images/200-skupper-console.png[Skupper Console]
 8. Your site {frontend-namespace} should be showing here.
