@@ -89,7 +89,7 @@ In the previous lab you used the `rhoas` CLI to connect your managed Kafka clust
 +
 [source,bash,subs="attributes+"]
 ----
-rhoas --whoami
+rhoas whoami
 ----
 +
 If the output of the command says that you are not logged in, refer to the instructions in the previous lab to log in.
@@ -119,10 +119,10 @@ Were you able to successfully connect to the managed Kafka cluster?
 . Expand the *projects/lab-2* folder.
 . Open the *kafka-mirrormaker* file. +
   The *kafka-mirrormaker* defines the Kafka MirrorMaker Custom Resource. Note the following details:
-  ** Lines 28 to 46 define the different Kafka clusters for which replication will be set up: the edge cluster and the central cluster.
+  ** Lines 9 to 26 define the different Kafka clusters for which replication will be set up: the edge cluster and the central cluster.
   ** In this lab, the edge Kafka cluster is in the the same OpenShift cluster, so you can connect to it through the internal bootstrap URL.
   ** The connection to the managed central Kafka cluster requires the bootstrap address and the credentials. You will add these in the next step.
-  ** Lines 46 to 65 define the different replications. In this case we have only one, using the edge Kafka cluster as source and the central cluster as destination.
+  ** Lines 27 to 45 define the different replications. In this case we have only one, using the edge Kafka cluster as source and the central cluster as destination.
   ** The `topicPatterns` property defines the topics that need to be replicated between the source and destination clusters. In this case we only want to replicate the `toll-station-events` topic.
   ** The data from the source cluster topic will be replicated to a topic named `edge-toll-station-events` on the destination cluster. The `edge-` prefix is the concatenation of the alias of the source cluster (`edge`) and the value of the `replication.policy.separator` property.
 . Replace the placeholders in the file (everything surrounded with `{{ }}`) with the appropriate values:
