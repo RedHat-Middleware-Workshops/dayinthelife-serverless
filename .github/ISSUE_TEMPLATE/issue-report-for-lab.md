@@ -1,5 +1,5 @@
 ---
-name: Issue report
+name: Issue report for lab
 about: Create a report to help us improve
 title: ''
 labels: ''
