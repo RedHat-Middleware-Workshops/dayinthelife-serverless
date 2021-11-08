@@ -239,9 +239,26 @@ Were you able to access the skupper console and see your site there?
 
 === Create a Skupper Access Token
 
-<TODO: explain how tokens work>
+Creating a link between Skupper enabled namespaces requires a secret token that allows permission to create the link. The token carries the link details required for Skupper connection. We will use this token in the remote cluster to link the namespaces.
 
-Creating a link between Skupper enabled namespaces requires a secret token that allows permission to create the link. The token also carries the link details required for Skupper connection. We will use this token in the remote cluster to link the namespaces.
+There are two types of Skupper token:
+
+* **Claim token (default)**
++
+A claim token can be restricted by:
++
+====
+** time - prevents token reuse after a specified period.
+** usage - prevents creating multiple links from a single token.
+====
++
+All inter-site traffic is protected by mutual TLS using a private, dedicated certificate authority (CA). A claim token is not a certificate, but is securely exchanged for a certificate during the linking process. By implementing appropriate restrictions (for example, creating a single-use claim token), you can avoid the accidental exposure of certificates.
+
+* **Cert token**
++
+You can use a cert token to create a link to the site which issued that token, it includes a valid certificate from that site.
++
+All inter-site traffic is protected by mutual TLS using a private, dedicated certificate authority (CA). A cert token is a certificate issued by the dedicated CA. Protect it appropriately.
 
 [NOTE]
 ====
