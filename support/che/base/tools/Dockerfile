@@ -1,4 +1,4 @@
-FROM registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:2.10-4 AS kafkacat
+FROM registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:2.12-9 AS kafkacat
 USER root
 RUN dnf -y install gcc which gcc-c++ wget make git cmake
 ENV KAFKACAT_VERSION=1.6.0
@@ -7,13 +7,13 @@ RUN cd /tmp && git clone https://github.com/edenhill/kafkacat -b $KAFKACAT_VERSI
     cd kafkacat && \
     ./bootstrap.sh
 
-FROM registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:2.10-4
+FROM registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:2.12-9
 
-ENV CAMELK_VERSION=1.4.0
-ENV SKUPPER_VERSION=0.7.0
-ENV RHOAS_VERSION=0.31.0
-ENV TKN_VERSION=0.15.0
-ENV KN_VERSION=0.19.1
+ENV CAMELK_VERSION=1.4.1
+ENV SKUPPER_VERSION=0.8.0
+ENV RHOAS_VERSION=0.35.0
+ENV TKN_VERSION=0.19.1
+ENV KN_VERSION=0.24.0
 
 USER root
 
@@ -27,7 +27,7 @@ RUN wget https://mirror.openshift.com/pub/openshift-v4/clients/camel-k/${CAMELK_
 
 # Install rhoas
 RUN wget https://github.com/redhat-developer/app-services-cli/releases/download/v${RHOAS_VERSION}/rhoas_${RHOAS_VERSION}_linux_amd64.tar.gz \
-    -O - | tar -xz --strip 2 -C /usr/local/bin rhoas_${RHOAS_VERSION}_linux_amd64/bin/rhoas
+    -O - | tar -xz --strip 1 -C /usr/local/bin rhoas_${RHOAS_VERSION}_linux_amd64/rhoas
 
 # Install Knative
 RUN wget https://mirror.openshift.com/pub/openshift-v4/clients/serverless/${KN_VERSION}/kn-linux-amd64-${KN_VERSION}.tar.gz \
