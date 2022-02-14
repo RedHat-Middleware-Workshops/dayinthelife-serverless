@@ -94,6 +94,13 @@ rhoas whoami
 +
 If the output of the command says that you are not logged in, refer to the instructions in the previous lab to log in.
 
+. Set the current project in OpenShift to `{smartcity-central-namespace}`:
++
+[source,bash,subs="attributes+"]
+----
+oc project {smartcity-central-namespace}
+----
+
 . Connect your Managed Kafka and OpenShift Project:
 +
 [source,bash,subs="attributes+"]
