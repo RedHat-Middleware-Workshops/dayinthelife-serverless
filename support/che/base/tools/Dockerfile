@@ -10,8 +10,8 @@ RUN cd /tmp && git clone https://github.com/edenhill/kafkacat -b $KAFKACAT_VERSI
 FROM registry.redhat.io/codeready-workspaces/plugin-java11-rhel8:2.12-9
 
 ENV CAMELK_VERSION=1.4.1
-ENV SKUPPER_VERSION=0.8.0
-ENV RHOAS_VERSION=0.35.0
+ENV SKUPPER_VERSION=0.8.6
+ENV RHOAS_VERSION=0.38.4
 ENV TKN_VERSION=0.19.1
 ENV KN_VERSION=0.24.0
 
@@ -30,8 +30,8 @@ RUN wget https://github.com/redhat-developer/app-services-cli/releases/download/
     -O - | tar -xz --strip 1 -C /usr/local/bin rhoas_${RHOAS_VERSION}_linux_amd64/rhoas
 
 # Install Knative
-RUN wget https://mirror.openshift.com/pub/openshift-v4/clients/serverless/${KN_VERSION}/kn-linux-amd64-${KN_VERSION}.tar.gz \
-    -O - | tar -xz -C /usr/local/bin ./kn
+RUN wget https://mirror.openshift.com/pub/openshift-v4/clients/serverless/${KN_VERSION}/kn-linux-amd64.tar.gz \
+    -O - | tar -xz -C /usr/local/bin
 
 # Install Tekton
 RUN wget https://mirror.openshift.com/pub/openshift-v4/clients/pipeline/${TKN_VERSION}/tkn-linux-amd64-${TKN_VERSION}.tar.gz \
