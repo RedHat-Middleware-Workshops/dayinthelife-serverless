@@ -40,9 +40,9 @@ image::images/000-cloud-register.png[Register]
 . Expand the *Find an app or service* dropdown at the top and select the *{product-name}* item.
 +
 image::images/001-app-services.png[Find app or service]
-. Dismiss the Welcome dialog by clicking on *Not now*.
+. Dismiss the feedback dialog by clicking on *Ask me later* or clicking the *X*.
 +
-image::images/002-dismiss-tour.png[Close Guided Tour]
+image::images/002-dismiss-tour.png[Close Feedback]
 
 {blank}
 
@@ -64,7 +64,8 @@ Now that you have a cloud services account, you can start creating resources.
 image::images/000-create-kafka-instance.png[Create Kafka Instance]
 
 . Enter a name for your Kafka instance, e.g `{user-username}-kafka`.
-. Use the default values for the available parameters.
+. Select the appropiate region for your location.
+. Use the default values for the other parameters.
 . Click the *Create instance* button.
 +
 image::images/001-create-user-instance.png[Create User Instance]
@@ -101,7 +102,7 @@ Next up, it is time to create an account for application to connect to your new 
 
 
 [time=5]
-== Instance Connection Details & Permissions
+== Instance Connection Details And Permissions
 
 Connecting to a {product-name} instance requires the *Bootstrap server URL* and
 the *Client ID* and *Client Password* associated with a *Service Account*.
@@ -116,7 +117,7 @@ image::images/000-view-details.png[View Details]
 . Select the *Connection* tab. Click the clipboard button to copy the *Bootstrap server* URL from this screen. Then click on *Create service account*.
 +
 image::images/02-kafka-details.png[Kafka instance in Ready state]
-. Enter `{user-username}-sa` in *Name* and `Workshop service account` in the *Description* for the Service Account. Click *Create*
+. Enter `{user-username}-sa` in *Short description* for the Service Account. Click *Create*
 +
 image::images/001-create-serviceacount.png[Create service account]
 . Copy the *Client ID* and *Client Secret* by clicking the clipboard button for each field to a secure location. After you are sure that you have the values secured, select the checkbox and click the *Close* button.
@@ -143,6 +144,8 @@ Follow these steps to provide your new Service Account with broad permissions:ap
 image::images/04-kafka-permissions.png[Kafka instance permissions]
 . Click the *Manage access* button. A dialog is displayed.
 . Select *All accounts* from the *Account* dropdown.
++
+image::images/041-kafka-all-accounts.png[Kafka instance permissions]
 . Click *Next*. A dialog containing *Review existing permissions* and *Assign permissions* sections is displayed.
 . Configure the permissions as shown in the *Assign permissions* section of the dialog.
 +
