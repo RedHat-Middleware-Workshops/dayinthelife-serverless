@@ -16,12 +16,12 @@ The following instructions introduce you to your development environment, and th
 
 *Overview*
 
-Built on the open Eclipse Che project, Red Hat CodeReady Workspaces uses Kubernetes and containers to provide any member of the development or IT team with a consistent, secure, and zero-configuration development environment. The experience is as fast and familiar as an integrated development environment on your laptop.
+Built on the open Eclipse Che project, Red Hat OpenShift Dev Spaces uses Kubernetes and containers to provide any member of the development or IT team with a consistent, secure, and zero-configuration development environment. The experience is as fast and familiar as an integrated development environment on your laptop.
 
-CodeReady Workspaces is included with your OpenShift subscription and is available in the Operator Hub. It provides development teams a faster and more reliable foundation on which to work, and it gives operations centralized control and peace of mind.
+OpenShift Dev Spaces is included with your OpenShift subscription and is available in the Operator Hub. It provides development teams a faster and more reliable foundation on which to work, and it gives operations centralized control and peace of mind.
 
 [type=walkthroughResource,serviceName=codeready]
-.Red Hat CodeReady Workspaces
+.Red Hat OpenShift Dev Spaces
 ****
 * link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
 ****
@@ -47,21 +47,21 @@ CodeReady Workspaces is included with your OpenShift subscription and is availab
 [time=5]
 == Accessing a Development Environment
 
-The development environment you use throughout the workshop is a web-hosted IDE known as link:https://developers.redhat.com/products/codeready-workspaces/overview[Red Hat CodeReady Workspaces, window="_blank"].
+The development environment you use throughout the workshop is a web-hosted IDE known as link:https://developers.redhat.com/products/codeready-workspaces/overview[Red Hat OpenShift Dev Spaces, window="_blank"].
 
-=== Login to CodeReady Workspaces
+=== Login to OpenShift Dev Spaces
 
 To access your development environment:
 
-. Click the link:{codeready-url}[Console, window="_blank"] link under the *Red Hat CodeReady Workspaces* in the *Resources* panel on the right.
+. Click the link:{codeready-url}[Console, window="_blank"] link under the *Red Hat OpenShift Dev Spaces* in the *Resources* panel on the right.
 . Log in using your username (`{user-username}`) and password (`{user-password}`)
 +
-image:images/000-codeready-login.png[CodeReady Workspaces Login, role="integr8ly-img-responsive"]
-
+image:images/000-codeready-login.png[OpenShift Dev Spaces Login, role="integr8ly-img-responsive"]
++
 {blank}
-
++
 Once you are logged in, you'll see the CodeReady dashboard. This lists available workspaces.
-
++
 image::images/00-crw-dashboard.png[CodeReady Dashboard, role="integr8ly-img-responsive"]
 
 === Accessing your CodeReady Workspace
@@ -129,10 +129,12 @@ You have access to the following projects and can switch between them with 'oc p
 
   * {user-username}
     {user-username}-codeready
-    {user-username}-dayinthel-0605
+    {user-username}-dayinthel-7a87
     {user-username}-shared-475f
+    {user-username}-smartcity-central
+    {user-username}-smartcity-edge
 
-Using project "{user-username}".
+Using project "user1".
 Welcome! See 'oc help' to get started.
 ----
 +

@@ -33,13 +33,13 @@ Knative. Knative will allow this API to scale up/down based on load.
 
 image::images/00-arch.png[Overview, role="integr8ly-img-responsive"]
 
-A quick reminder before you get started. Use the following credentials to login into the OpenShift and CodeReady Workspaces consoles:
+A quick reminder before you get started. Use the following credentials to login into the OpenShift and OpenShift Dev Spaces consoles:
 
 * Your *username* is: `{user-username}`
 * Your *password* is: `{user-password}`
 
 [type=walkthroughResource,serviceName=codeready]
-.Red Hat CodeReady Workspaces
+.Red Hat OpenShift Dev Spaces
 ****
 * link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
 ****
@@ -138,7 +138,7 @@ oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:
 . Obtain a token from link:{cloud-console}/openshift/token[console.redhat.com/openshift/token] using the *Load Token* button. The Operator will use this to communicate the {rhoas} APIs.
 +
 image:images/07-openshift-token.png[Red Hat Cloud Token]
-. Navigate to your workspace in link:{codeready-url}[CodeReady Workspaces, window="_blank"].
+. Navigate to your workspace in link:{codeready-url}[OpenShift Dev Spaces, window="_blank"].
 . Click on the _My Workspace_ (cube) icon on the right side panel.
 . Expand the *User Runtimes/tools* section.
 . Click on *>_ New terminal*.
@@ -203,7 +203,7 @@ image:images/061-camel-scenario.png[Camel Scenario]
 
 === Define and Build the API
 
-. Navigate to your workspace in link:{codeready-url}[CodeReady Workspaces, window="_blank"].
+. Navigate to your workspace in link:{codeready-url}[OpenShift Dev Spaces, window="_blank"].
 . Expand the *projects/lab-01* folder.
 . Open the *openapi-spec.yaml* file.
 
@@ -218,7 +218,7 @@ Camel K will use expose this OpenAPI Spec for consumers to build compliant API c
 
 To build the REST API:
 
-. Navigate to your workspace in link:{codeready-url}[CodeReady Workspaces, window="_blank"].
+. Navigate to your workspace in link:{codeready-url}[OpenShift Dev Spaces, window="_blank"].
 . Expand the *projects/lab-01* folder.
 . Open the *MeterConsumer.java* file.
 
@@ -261,7 +261,7 @@ image:images/08-camelk-serverless-down.png[Camel K serverless APP]
 +
 image:images/09-camelk-pod.png[Camel K Pod]
 . Click the Camel K Pod and copy the URL listed under *Routes*.
-. In the CodeReady Workspaces terminal, send a HTTP POST request to make sure everything works correctly:
+. In the OpenShift Dev Spaces terminal, send a HTTP POST request to make sure everything works correctly:
 +
 [source,bash,role="copypaste",subs="attributes+"]
 ----
@@ -288,7 +288,7 @@ oc exec $(oc get pods -o custom-columns=POD:.metadata.name --no-headers -l app=i
 image:images/10-db-result.png[PostgreSQL Query Output]
 . Return to the link:{openshift-host}/topology/ns/{namespace}/graph[OpenShift Topology View, window="_blank"] and wait for the *meter-consumer* Pod to scale down to zero. You'll know this happened when the blue circle turns white.
 
-. In the CodeReady Workspaces terminal, send another HTTP POST request, and see the Pod scales back up to handle it:
+. In the OpenShift Dev Spaces terminal, send another HTTP POST request, and see the Pod scales back up to handle it:
 +
 [source,bash,role="copypaste",subs="attributes+"]
 ----

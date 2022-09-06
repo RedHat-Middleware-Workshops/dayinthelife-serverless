@@ -30,7 +30,7 @@ In this lab you will set up (part of) the central datahub. Each toll station (wh
 <TODO: image of overall architecture>
 
 [type=walkthroughResource,serviceName=codeready]
-.Red Hat CodeReady Workspaces
+.Red Hat OpenShift Dev Spaces
 ****
 * link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
 ****
@@ -122,7 +122,7 @@ Were you able to successfully connect to the managed Kafka cluster?
 
 === Install Kafka MirrorMaker
 
-. Navigate to your workspace in link:{codeready-url}[CodeReady Workspaces, window="_blank"].
+. Navigate to your workspace in link:{codeready-url}[OpenShift Dev Spaces, window="_blank"].
 . Expand the *projects/lab-2* folder.
 . Open the *kafka-mirrormaker* file. +
   The *kafka-mirrormaker* defines the Kafka MirrorMaker Custom Resource. Note the following details:
@@ -184,7 +184,7 @@ The next step is consuming the replicated data from the managed Kafka cluster fo
 
 === Deploy the Camel K Integration
 
-. Navigate to your workspace in link:{codeready-url}[CodeReady Workspaces, window="_blank"].
+. Navigate to your workspace in link:{codeready-url}[OpenShift Dev Spaces, window="_blank"].
 . Expand the *projects/lab-02* folder.
 . Deploy the Camel K IntegrationPlatform Custom Resource in the {smartcity-central-namespace} namespace.
 +

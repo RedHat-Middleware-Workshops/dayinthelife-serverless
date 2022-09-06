@@ -169,7 +169,7 @@ Were you able to successfully obtain the Connection Details?
 == Verify Connectivity
 
 [type=taskResource]
-.Red Hat CodeReady Workspaces
+.Red Hat OpenShift Dev Spaces
 ****
 * link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
 ****
