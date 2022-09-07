@@ -108,11 +108,33 @@ oc project {smartcity-central-namespace}
 rhoas cluster connect --token $TOKEN --namespace {smartcity-central-namespace}
 ----
 +
+{blank}
++
+You will be prompted to select a service. Choose `kafka`, then confirm de details of the connection.
++
+{blank}
++
+You should see a result similar to the following:
++
+----
+✔️  kafka resource "user1-kafka" has been created
+Waiting for status from kafka resource.
+Created kafka can be already injected to your application.
+
+To bind you need to have Service Binding Operator installed:
+https://github.com/redhat-developer/service-binding-operator
+
+You can bind kafka to your application by executing "rhoas cluster bind"
+or directly in the OpenShift Console topology view.
+
+✔️  Connection to service successful.
+----
+
 At this point your OpenShift Project will have the required details for applications to connect to your Managed Kafka. These details include:
 
 * A *KafkaConnection* Custom Resource (CR)
 * A *rh-cloud-services-service-account* Secret. This contains a SASL Client ID and Client Secret.
-* A *rh-cloud-services-accesstoken-cli* Secret. This contains the {rhoas} API Token.
+* A *rh-cloud-services-accesstoken* Secret. This contains the {rhoas} API Token.
 
 [type=verification]
 Were you able to successfully connect to the managed Kafka cluster?
@@ -123,7 +145,7 @@ Were you able to successfully connect to the managed Kafka cluster?
 === Install Kafka MirrorMaker
 
 . Navigate to your workspace in link:{codeready-url}[OpenShift Dev Spaces, window="_blank"].
-. Expand the *projects/lab-2* folder.
+. Expand the *projects/lab-02/mirror-maker* folder.
 . Open the *kafka-mirrormaker* file. +
   The *kafka-mirrormaker* defines the Kafka MirrorMaker Custom Resource. Note the following details:
   ** Lines 9 to 26 define the different Kafka clusters for which replication will be set up: the edge cluster and the central cluster.
@@ -132,33 +154,26 @@ Were you able to successfully connect to the managed Kafka cluster?
   ** Lines 27 to 45 define the different replications. In this case we have only one, using the edge Kafka cluster as source and the central cluster as destination.
   ** The `topicPatterns` property defines the topics that need to be replicated between the source and destination clusters. In this case we only want to replicate the `toll-station-events` topic.
   ** The data from the source cluster topic will be replicated to a topic named `edge-toll-station-events` on the destination cluster. The `edge-` prefix is the concatenation of the alias of the source cluster (`edge`) and the value of the `replication.policy.separator` property.
+. Open the `set-auth-credentials.yaml` file. This file will be merged with the kafka-mirrormaker.yaml to update the connection information of the source and target clusters.
 . Replace the placeholders in the file (everything surrounded with `{{ }}`) with the appropriate values:
 ** `{{user}}`: replace with your OpenShift user name, {user-username}.
 ** `{{smartcity-central-bootstrap-server}}`: replace with the bootstrap address of the managed server. The bootstrap address can be obtained from the *KafkaConnection* CR:
 +
 [source,bash,subs="attributes+"]
 ----
-oc get KafkaConnection $(oc get KafkaConnection --no-headers -o custom-columns=NAME:.metadata.name -n {smartcity-central-namespace}) -n {smartcity-central-namespace} --template='{{.status.bootstrapServerHost}}'; echo
+oc get KafkaConnection -n {smartcity-central-namespace} -o json | jq .items[0].status.bootstrapServerHost
 ----
 ** `{{smartcity-central-service-account-id}}`: replace with the id of the service account created by the `rhoas connect` command. You can obtain the value with the following command:
 +
 [source,bash,subs="attributes+"]
 ----
-oc get secret rh-cloud-services-service-account -n {smartcity-central-namespace} --template='{{index .data "client-id"}}' | base64 -d; echo
-----
-** Use the following command to replace all placeholders from the command line:
-+
-[source,bash,subs="attributes+"]
-----
-  sed -i "s/{{smartcity-central-bootstrap-server}}/$(oc get KafkaConnection $(oc get KafkaConnection --no-headers -o custom-columns=NAME:.metadata.name -n {smartcity-central-namespace}) -n {smartcity-central-namespace} --template='{{.status.bootstrapServerHost}}')/g" /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml && \
-  sed -i "s/{{smartcity-central-service-account-id}}/$(oc get secret rh-cloud-services-service-account -n {smartcity-central-namespace} --template='{{index .data "client-id"}}' | base64 -d)/g" /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml && \
-  sed -i "s/{{user}}/{user-username}/g" /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml
+oc get secret rh-cloud-services-service-account -n {smartcity-central-namespace} -o json | jq '.data."client-id" | @base64d'
 ----
 . Deploy the Kafka MirrorMaker Custom Resource:
 +
 [source,bash,subs="attributes+"]
 ----
-oc create -f /projects/{codeready-project}/projects/lab-02/kafka-mirrormaker.yml -n {smartcity-central-namespace}
+oc apply -k /projects/{codeready-project}/projects/lab-03/mirror-maker/ -n {smartcity-central-namespace}
 ----
 . Follow the deployment of the Kafka MirrorMaker instance in the link:{openshift-host}/topology/ns/{smartcity-central-namespace}[Topology View, window="_blank"] of the {smartcity-central-namespace} project. After a couple of seconds you should see that the MirrorMaker pod deployed successfully:
 +

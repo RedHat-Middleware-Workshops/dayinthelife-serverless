@@ -128,33 +128,50 @@ Your OpenShift environment has been pre-configured with the {rhoas} Operator. Th
 
 Embed your Managed Kafka connection details OpenShift Project:
 
-. Login using the OpenShift CLI:
-+
-[source,bash,subs="attributes+"]
-----
-oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true
-----
-
-. Obtain a token from link:{cloud-console}/openshift/token[console.redhat.com/openshift/token] using the *Load Token* button. The Operator will use this to communicate the {rhoas} APIs.
+. Obtain a token from link:{cloud-console}/openshift/token[console.redhat.com/openshift/token, window="_blank"] using the *Load Token* button. The Operator will use this to communicate the {rhoas} APIs.
 +
 image:images/07-openshift-token.png[Red Hat Cloud Token]
 . Navigate to your workspace in link:{codeready-url}[OpenShift Dev Spaces, window="_blank"].
 . Click on the _My Workspace_ (cube) icon on the right side panel.
 . Expand the *User Runtimes/tools* section.
 . Click on *>_ New terminal*.
-. Login using {rhoas} CLI:
+. First, login into OpenShift using the OpenShift CLI:
 +
 [source,bash,subs="attributes+"]
 ----
-export TOKEN=YOUR_TOKEN_GOES_HERE
+oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true
 ----
+
+. Next, login using {rhoas} CLI:
++
+[source,bash,subs="attributes+"]
+----
+export TOKEN=<YOUR_TOKEN_GOES_HERE>
+----
++
+{blank}
 +
 [source,bash,subs="attributes+"]
 ----
 rhoas login --token $TOKEN
 ----
++
+{blank}
++
+[NOTE]
+====
+Select `Y` for the anonymous data. Select `N` when prompted to update the CLI.
+====
++
+{blank}
++
+You will see a success message similar to this:
++
+----
+✔️  You are now logged in as "your_username"
+----
 
-. Set your Managed Kafka as the working context. This command will provide a **prompt to choose your Kafka cluster:
+. Set your Managed Kafka as the working context. This command will provide a prompt to choose your Kafka cluster:
 +
 [source,bash,subs="attributes+"]
 ----
@@ -166,16 +183,38 @@ rhoas kafka use
 ----
 rhoas cluster connect --token $TOKEN --namespace {namespace}
 ----
++
+{blank}
++
+You will be prompted to select a service. Choose `kafka`, then confirm de details of the connection.
++
+{blank}
++
+You should see a result similar to the following:
++
+----
+✔️  kafka resource "user1-kafka" has been created
+Waiting for status from kafka resource.
+Created kafka can be already injected to your application.
+
+To bind you need to have Service Binding Operator installed:
+https://github.com/redhat-developer/service-binding-operator
+
+You can bind kafka to your application by executing "rhoas cluster bind"
+or directly in the OpenShift Console topology view.
+
+✔️  Connection to service successful.
+----
 
 At this point your OpenShift Project will have the required details for applications to connect to your Managed Kafka. These details include:
 
 * A *KafkaConnection* Custom Resource (CR)
 * A *rh-cloud-services-service-account* Secret. This contains a SASL Client ID and Client Secret.
-* A *rh-cloud-services-accesstoken-cli* Secret. This contains the {rhoas} API Token.
+* A *rh-cloud-services-accesstoken* Secret. This contains the {rhoas} API Token.
 
 Verify these resources exist using the following commands:
 
-. List the Secrets and verify the list contains *rh-cloud-services-service-account* and *rh-cloud-services-accesstoken-cli*:
+. List the Secrets and verify the list contains *rh-cloud-services-service-account* and *rh-cloud-services-accesstoken*:
 +
 [source,bash,subs="attributes+"]
 ----
