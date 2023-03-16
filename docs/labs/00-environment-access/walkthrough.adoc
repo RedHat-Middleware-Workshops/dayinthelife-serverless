@@ -6,7 +6,7 @@
 :namespace: {user-username}
 
 // URLs
-:codeready-url: http://codeready-codeready.{openshift-app-host}/
+:codeready-url: https://devspaces.{openshift-app-host}/
 :openshift-streams-url: https://console.redhat.com/beta/application-services/streams/kafkas
 
 [id='getting-ready']
@@ -57,56 +57,75 @@ To access your development environment:
 . Log in using your username (`{user-username}`) and password (`{user-password}`)
 +
 image:images/000-codeready-login.png[OpenShift Dev Spaces Login, role="integr8ly-img-responsive"]
+. If this is the first time logging in, you will need to authorize access to your account.
 +
-{blank}
+image:images/001-devspaces-authorize.png[OpenShift Dev Spaces Login Authorize, role="integr8ly-img-responsive"]
+. Once you are logged in, you'll see the OpenShift Dev Spaces dashboard. This lists available workspaces.
 +
-Once you are logged in, you'll see the CodeReady dashboard. This lists available workspaces.
-+
-image::images/00-crw-dashboard.png[CodeReady Dashboard, role="integr8ly-img-responsive"]
+image::images/00-crw-dashboard.png[OpenShift Dev Spaces Dashboard, role="integr8ly-img-responsive"]
 
-=== Accessing your CodeReady Workspace
+=== Accessing your OpenShift Dev Spaces Workspace
 
 This workshop provides a single, pre-configured workspace with plugins, source code, and even container images that have various Command-Line Interface (CLI) tools installed.
 
-. Click the *Open* link for the workspace named `dil-serverless-{user-username}`.
+. Click the *Open* link for the workspace named `dayinthelife-workspace`.
 +
-image::images/001-open-workspace.png[Open CodeReady Workspace, role="integr8ly-img-responsive"]
+image::images/001-open-workspace.png[Open OpenShift Dev Spaces Workspace, role="integr8ly-img-responsive"]
 . This will start an instance of the workspace. Please wait a few moments while it downloads the required container images and configuration setup.
-. Close the welcome and README tab and the other open dialogs by clicking the *x*, then click on the Explorer (file) icon on the left side bar. The Explorer shows you the *dil-serverless* folder with the required projects and lab files.
+. Close the welcome tab by clicking the *x*, then click on the Explorer (file) icon on the left side bar. The Explorer shows you the *International Inc* folder with the required projects and lab files.
 +
-image::images/01-crw-welcome.png[CodeReady Welcome screen, role="integr8ly-img-responsive"]
+image::images/01-crw-welcome.png[OpenShift Dev Spaces Welcome screen, role="integr8ly-img-responsive"]
 +
 [NOTE]
 ====
-This IDE is based on *CodeReady*, which is in turn is based on Microsoft VSCode. It will look familiar if you have already used it.
-
-You can close the _Problems_ and _Output_ views to clear space.
+This IDE is based on Microsoft's VS Code. It will look familiar if you have already used it.
 ====
 
 [time=2]
 == Accessing a Terminal
 
 During the workshop you will use the OpenShift CLI along with other developer-focused Command Line Interface (CLI) tools.
-These CLI tools are available directly inside your Workspace via tools containers.
+These CLI tools are available directly inside your Workspace via containers.
 
-Access the tools container(s) like so:
+Access the tools container like so:
 
-. Click on the _My Workspace_ (cube) icon on the right side panel.
-. Expand the *User Runtimes* folder.
-. Expand the *tools* section.
-. Click on *>_ New terminal*.
+. Click on the *Menu* (_hamburger icon_) on the right side panel.
+. Expand the *Terminal* folder.
+. Click on *New terminal*.
 
 {blank}
 
-A terminal window should be open at the bottom of the screen. This terminal is attached to the running CodeReady container and is also running on OpenShift. This is the place where you will issue most of the commands from this workshop.
-
 image::images/02-crw-tools-container.png[Open Terminal, role="integr8ly-img-responsive"]
+
+{blank}
+
+A terminal window should be open at the bottom of the screen. This terminal is attached to the running OpenShift Dev Spaces container and is also running on OpenShift. This is the place where you will issue most of the commands from this workshop.
+
+{blank}
+
+image::images/200-devspaces-terminal.png[Terminal, role="integr8ly-img-responsive"]
+
 
 [time=2]
 == Login into OpenShift using the CLI
 
 . Open a terminal using the instructions from the previous section.
-. In the terminal tab, issue the following command:
+. Check that you are logged in with your user:
++
+[source,bash,subs="attributes+"]
+----
+oc whoami
+----
++
+{blank}
++
+You should see something like the following:
++
+[subs="attributes+"]
+----
+{user-username}
+----
+.. In case you are not logged in and you need to login into the terminal, issue the following command:
 +
 [source,bash,subs="attributes+"]
 ----
@@ -119,7 +138,7 @@ oc login -u {user-username} -p {user-password} https://$KUBERNETES_SERVICE_HOST:
 ====
 You can use the right copy button to copy this type of commands along all the lab instructions.
 ====
-. You should see something like the following (the project names may be different):
+.. You should see something like the following (the project names may be different):
 +
 [subs="attributes+"]
 ----
@@ -148,8 +167,10 @@ image:images/002-terminal-cli-login.png[OC Login Command, role="integr8ly-img-re
 ----
 oc project {namespace}
 ----
-
++
 {blank}
++
+image:images/300-devspaces-terminal-project.png[OC Project Command, role="integr8ly-img-responsive"]
 
 Now you are ready to start working on the application services!
 

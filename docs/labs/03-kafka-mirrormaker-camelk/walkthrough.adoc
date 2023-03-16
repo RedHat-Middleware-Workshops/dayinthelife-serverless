@@ -13,7 +13,7 @@
 // URLs
 :openshift-streams-url: https://console.redhat.com/beta/application-services/streams/kafkas
 :next-lab-url: https://tutorial-web-app-webapp.{openshift-app-host}/tutorial/dayinthelife-streaming.git-labs-02-/
-:codeready-url: http://codeready-codeready.{openshift-app-host}/
+:codeready-url: https://devspaces.{openshift-app-host}/
 :openshift-console: http://console-openshift-console.{openshift-app-host}/
 
 [id='kafka-mirrormaker-camel-k']

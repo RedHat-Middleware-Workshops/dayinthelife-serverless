@@ -5,7 +5,7 @@
 :standard-fail-text: Verify that you followed all the steps. If you continue to have issues, contact a workshop assistant.
 :namespace: {user-username}
 :product-name: Streams for Apache Kafka
-:codeready-url: http://codeready-codeready.{openshift-app-host}/
+:codeready-url: https://devspaces.{openshift-app-host}/
 :cloud-console: https://console.redhat.com/
 
 = {title}
@@ -189,7 +189,7 @@ You'll use the link:https://github.com/edenhill/kafkacat[kcat, window="_blank"] 
 
 {blank}
 
-. Navigate back to the link:{codeready-url}[CodeReady Workspace, window="_blank"] tab
+. Navigate back to the link:{codeready-url}[OpenShift Dev Spaces Workspace, window="_blank"] tab
 . If you haven't done it, open the workspace named `dil-serverless-{user-username}`.
 . If you don't have your terminal tab open:
 .. Click on the _My Workspace_ (cube) icon on the right side panel.

@@ -13,7 +13,7 @@
 // URLs
 :openshift-streams-url: https://console.redhat.com/beta/application-services/streams/kafkas
 :next-lab-url: https://tutorial-web-app-instructions.{openshift-app-host}/tutorial/dayinthelife-serverless.git-labs-03-kafka-mirrormaker-camelk/
-:codeready-url: http://codeready-codeready.{openshift-app-host}/
+:codeready-url: https://devspaces.{openshift-app-host}/
 
 [id='knative-serving-camel-k']
 = {title}
