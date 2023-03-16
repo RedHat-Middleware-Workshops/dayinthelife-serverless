@@ -20,7 +20,7 @@ Built on the open Eclipse Che project, Red Hat OpenShift Dev Spaces uses Kuberne
 
 OpenShift Dev Spaces is included with your OpenShift subscription and is available in the Operator Hub. It provides development teams a faster and more reliable foundation on which to work, and it gives operations centralized control and peace of mind.
 
-[type=walkthroughResource,serviceName=codeready]
+[type=walkthroughResource]
 .Red Hat OpenShift Dev Spaces
 ****
 * link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
