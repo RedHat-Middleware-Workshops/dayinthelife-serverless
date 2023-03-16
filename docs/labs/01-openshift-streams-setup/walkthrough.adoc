@@ -190,11 +190,11 @@ You'll use the link:https://github.com/edenhill/kafkacat[kcat, window="_blank"] 
 {blank}
 
 . Navigate back to the link:{codeready-url}[OpenShift Dev Spaces Workspace, window="_blank"] tab
-. If you haven't done it, open the workspace named `dil-serverless-{user-username}`.
+. If you haven't done it, open the workspace named `dayinthelife-workspace`.
 . If you don't have your terminal tab open:
-.. Click on the _My Workspace_ (cube) icon on the right side panel.
-.. Expand the **User Runtimes/tools** folder.
-.. Click on *>_ New terminal*.
+.. Click on the *Menu* (_hamburger icon_) on the right side panel.
+.. Expand the *Terminal* folder.
+.. Click on *New terminal*.
 . Run the following command to connect to your Kafka instance and list topic metadata:
 +
 [NOTE]
@@ -223,7 +223,7 @@ export CLIENT_SECRET=<replace-me>
 +
 [source,bash,subs="attributes+"]
 ----
-kafkacat -b $BOOTSTRAP_SERVER \
+kcat -b $BOOTSTRAP_SERVER \
 -X sasl.mechanisms=PLAIN \
 -X security.protocol=SASL_SSL \
 -X sasl.username=$CLIENT_ID \
