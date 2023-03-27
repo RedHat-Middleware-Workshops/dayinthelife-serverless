@@ -13,7 +13,7 @@
 // URLs
 :openshift-streams-url: https://console.redhat.com/beta/application-services/streams/kafkas
 :next-lab-url: https://tutorial-web-app-webapp.{openshift-app-host}/tutorial/dayinthelife-streaming.git-labs-02-/
-:codeready-url: http://codeready-codeready.{openshift-app-host}/
+:codeready-url: https://devspaces.{openshift-app-host}/
 :openshift-console: http://console-openshift-console.{openshift-app-host}/
 
 [id='kafka-mirrormaker-camel-k']
@@ -29,7 +29,7 @@ In this lab you will set up (part of) the central datahub. Each toll station (wh
 
 <TODO: image of overall architecture>
 
-[type=walkthroughResource,serviceName=codeready]
+[type=walkthroughResource]
 .Red Hat OpenShift Dev Spaces
 ****
 * link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
@@ -51,7 +51,7 @@ In this lab you will set up (part of) the central datahub. Each toll station (wh
 
 The *{smartcity-edge-namespace}* project represents a toll station edge deployment. It has been provisioned ahead of time. You can view the services by following these instructions:
 
-. Login to the link:{openshift-console}/topology/ns/{smartcity-edge-namespace}/graph[OpenShift Console, window="_blank"] to view the *{smartcity-edge-namespace}* project.
+. Login to the link:{openshift-console}/topology/ns/{smartcity-edge-namespace}?view=graph[OpenShift Console, window="_blank"] to view the *{smartcity-edge-namespace}* project.
 . The Topology view should look similar to this screenshot.
 +
 image:images/smartcity-edge-topology.png[SmartCity Edge Topology]
@@ -66,7 +66,7 @@ image:images/smartcity-edge-topology.png[SmartCity Edge Topology]
 
 The *{smartcity-central-namespace}* project represents the smart city central datahub. For this lab it is running on the same OpenShift cluster as the edge, while in reality it would be running on a different cluster, probably on a different cloud.
 
-. Login to the link:{openshift-console}/topology/ns/{smartcity-central-namespace}/graph[OpenShift Console, window="_blank"] to view the *{smartcity-central-namespace}* project.
+. Login to the link:{openshift-console}/topology/ns/{smartcity-central-namespace}?view=graph[OpenShift Console, window="_blank"] to view the *{smartcity-central-namespace}* project.
 . The Topology view should look similar to this screenshot.
 +
 image:images/smartcity-central-topology.png[SmartCity Central Topology]
@@ -236,7 +236,7 @@ kamel run TollStationEventConsumer.java --namespace {smartcity-central-namespace
 
 . As a result of the `kamel run` command, an image with the Camel Route is built and deployed on the OpenShift cluster. You can check the build progress by navigating to the link:https://console-openshift-console.{openshift-app-host}/k8s/ns/{smartcity-central-namespace}/builds[Builds view on the OpenShift Console]
 
-. Navigate to the link:https://console-openshift-console.{openshift-app-host}/topology/ns/{smartcity-central-namespace}/graph[OpenShift Topology View], and wait for the *toll-station-event-consumer* pod to start.
+. Navigate to the link:https://console-openshift-console.{openshift-app-host}/topology/ns/{smartcity-central-namespace}?view=graph[OpenShift Topology View], and wait for the *toll-station-event-consumer* pod to start.
 +
 image::images/camel-k-pod.png[Camel K Integration Pod]
 

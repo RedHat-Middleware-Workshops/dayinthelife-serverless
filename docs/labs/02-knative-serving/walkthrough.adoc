@@ -13,7 +13,7 @@
 // URLs
 :openshift-streams-url: https://console.redhat.com/beta/application-services/streams/kafkas
 :next-lab-url: https://tutorial-web-app-instructions.{openshift-app-host}/tutorial/dayinthelife-serverless.git-labs-03-kafka-mirrormaker-camelk/
-:codeready-url: http://codeready-codeready.{openshift-app-host}/
+:codeready-url: https://devspaces.{openshift-app-host}/
 
 [id='knative-serving-camel-k']
 = {title}
@@ -38,7 +38,7 @@ A quick reminder before you get started. Use the following credentials to login 
 * Your *username* is: `{user-username}`
 * Your *password* is: `{user-password}`
 
-[type=walkthroughResource,serviceName=codeready]
+[type=walkthroughResource]
 .Red Hat OpenShift Dev Spaces
 ****
 * link:{codeready-url}[Console, window="_blank", , id="resources-codeready-url"]
@@ -46,7 +46,7 @@ A quick reminder before you get started. Use the following credentials to login 
 [type=walkthroughResource]
 .Red Hat OpenShift Developer Console
 ****
-* link:{openshift-host}/topology/ns/{namespace}[Topology View, window="_blank"]
+* link:{openshift-host}/topology/ns/{namespace}?view=graph[Topology View, window="_blank"]
 ****
 [type=walkthroughResource]
 .Red Hat OpenShift Application Services
@@ -61,7 +61,7 @@ A quick reminder before you get started. Use the following credentials to login 
 
 Some services for this lab were provisioned ahead of time to provide a streamlined lab experience. View the services by following these instructions:
 
-. Login to the link:{openshift-host}/topology/ns/{namespace}/graph[OpenShift Console, window="_blank"] to view the *{namespace}* project.
+. Login to the link:{openshift-host}/topology/ns/{namespace}?view=graph[OpenShift Console, window="_blank"] to view the *{namespace}* project.
 . The Topology view should look similar to this screenshot.
 +
 image:images/01-topology.png[Initial Project Topology]
@@ -132,9 +132,11 @@ Embed your Managed Kafka connection details OpenShift Project:
 +
 image:images/07-openshift-token.png[Red Hat Cloud Token]
 . Navigate to your workspace in link:{codeready-url}[OpenShift Dev Spaces, window="_blank"].
-. Click on the _My Workspace_ (cube) icon on the right side panel.
-. Expand the *User Runtimes/tools* section.
-. Click on *>_ New terminal*.
+. If you haven't done it, open the workspace named `dayinthelife-workspace`.
+. If you don't have your terminal tab open:
+.. Click on the *Menu* (_hamburger icon_) on the right side panel.
+.. Expand the *Terminal* folder.
+.. Click on *New terminal*.
 . First, login into OpenShift using the OpenShift CLI:
 +
 [source,bash,subs="attributes+"]
@@ -231,13 +233,12 @@ Your now ready to deploy applications that connect to your Managed Kafka cluster
 
 [time=15]
 [id="Serving with API"]
-== Knative Serving, Camel K, & REST API
+== Knative Serving, Camel K, and REST API
 
 Now you're familiar with the OpenShift Topology and existing services, and have a Kafka Topic ready to ingest data. It's time to build and deploy your REST API.
 
 You build the API using Camel K and Quarkus.
 
-+
 image:images/061-camel-scenario.png[Camel Scenario]
 
 === Define and Build the API
@@ -246,12 +247,16 @@ image:images/061-camel-scenario.png[Camel Scenario]
 . Expand the *projects/lab-01* folder.
 . Open the *openapi-spec.yaml* file.
 
+{blank}
+
 This file defines the API you'll deploy. Notice that the API:
 
 * Exposes a `POST /meter/status` endpoint.
 * The POST request `content-type` must be `application/json`.
 * A *meterstatus* schema is defined as the format for the POST body.
 * The response type on success is defined as `200 OK`.
+
+{blank}
 
 Camel K will use expose this OpenAPI Spec for consumers to build compliant API clients.
 
@@ -261,6 +266,7 @@ To build the REST API:
 . Expand the *projects/lab-01* folder.
 . Open the *MeterConsumer.java* file.
 
+{blank}
 
 The *MeterConsumer.java* file defines a link:https://camel.apache.org/manual/latest/java-dsl.html[Camel Route using the Java DSL, window="_blank"].
 
@@ -296,7 +302,7 @@ image:images/08-camelk-serverless-up.png[Camel K serverless APP]
 image:images/08-camelk-serverless-down.png[Camel K serverless APP]
 
 === Test the REST API
-. Return to the link:{openshift-host}/topology/ns/{namespace}/graph[OpenShift Topology View, window="_blank"] and wait for the *meter-consumer* Pod to start.
+. Return to the link:{openshift-host}/topology/ns/{namespace}?view=graph[OpenShift Topology View, window="_blank"] and wait for the *meter-consumer* Pod to start.
 +
 image:images/09-camelk-pod.png[Camel K Pod]
 . Click the Camel K Pod and copy the URL listed under *Routes*.
@@ -325,7 +331,7 @@ oc exec $(oc get pods -o custom-columns=POD:.metadata.name --no-headers -l app=i
 ----
 +
 image:images/10-db-result.png[PostgreSQL Query Output]
-. Return to the link:{openshift-host}/topology/ns/{namespace}/graph[OpenShift Topology View, window="_blank"] and wait for the *meter-consumer* Pod to scale down to zero. You'll know this happened when the blue circle turns white.
+. Return to the link:{openshift-host}/topology/ns/{namespace}?view=graph[OpenShift Topology View, window="_blank"] and wait for the *meter-consumer* Pod to scale down to zero. You'll know this happened when the blue circle turns white.
 
 . In the OpenShift Dev Spaces terminal, send another HTTP POST request, and see the Pod scales back up to handle it:
 +
