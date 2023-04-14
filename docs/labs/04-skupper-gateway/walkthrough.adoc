@@ -132,17 +132,23 @@ Were you able to start the terminal?
 Time to start deploying the application.
 
 1. Access the developer view console by navigating to the link:{openshift-host}/topology/ns/{frontend-namespace}[AWS developer console, window="_blank"]
-2. Click on *Container Image*
+2. Click on *+Add* then click on the *Container images* card.
 +
 image:images/101-container-image.png[Container Image]
-3. We will deploy the image from the development team. Fill in `quay.io/redhatintegration/patient-portal-frontend` in the *Image name from external registry* section. Click the *Create* button to start the deployment.
+3. We will deploy the image from the development team. Fill in `quay.io/redhatintegration/patient-portal-frontend` in the *Image name from external registry* section. 
 +
 image:images/102-image-name.png[Image Name]
-4. OpenShift will start the deployment. It will take some moments to get to the running state. You will notice it is successful when it turns the surrounding circle into _dark blue_.
-5. Click the _Open URL_ button to access the web application.
+4. Scroll all the way down and click in the *Resource Type* Link.
++
+image:images/102a-resource-type.png[Image Name]
+5. Select *Deployment* as the _Resource Type_ instead of the default Serverless one. Finally, click the *Create* button to start the deployment.
++
+image:images/102b-deployment-type.png[Image Name]
+6. OpenShift will start the deployment. It will take some moments to get to the running state. You will notice it is successful when it turns the surrounding circle into _dark blue_.
+7. Click the _Open URL_ button to access the web application.
 +
 image:images/103-topology-view.png[Topology View]
-6. You will notice the application is not loading correctly as it is not being able to connect to the database and the payments service.
+8. You will notice the application is not loading correctly as it is not being able to connect to the database and the payments service.
 +
 image:images/104-patient-portal.png[Patient Portal]
 
@@ -172,7 +178,7 @@ oc set env deployment/patient-portal-frontend DATABASE_SERVICE_HOST=database
 +
 [source,bash,subs="attributes+"]
 ----
-skupper init --console-auth unsecured
+skupper init --enable-console --enable-flow-collector --console-auth unsecured --site-name aws
 ----
 +
 {blank}
@@ -185,9 +191,9 @@ skupper init --console-auth unsecured
 +
 You should see a message like the following one.
 +
-[,bash]
+[,bash,subs="attributes+"]
 ----
-Skupper is now installed in the 'user1-patient-front' namespace.  Use 'skupper status' to get more information.
+Skupper is now installed in the '{user-username}-patient-front' namespace.  Use 'skupper status' to get more information.
 ----
 4. Wait a few moments for the Skupper pods to start. Check they are running with the following command.
 +
@@ -203,9 +209,9 @@ You should see both skupper pods in `Running` status:
 [,bash]
 ----
 NAME                                          READY   STATUS    RESTARTS   AGE
-patient-portal-frontend-6fc9cdc58d-v6qbh      1/1     Running   0          97m
-skupper-router-7449bd7b4-8cnk9                1/1     Running   0          6m54s
-skupper-service-controller-78bc5b6cb6-bqd4x   1/1     Running   0          6m52s
+patient-portal-frontend-5c988ccdd5-fqj99      1/1     Running   0          42m
+skupper-router-f69954856-2cdxv                2/2     Running   0          49s
+skupper-service-controller-6c5bb94997-tmpk4   2/2     Running   0          47s
 ----
 5. Check the Skupper status with the following command: 
 +
@@ -221,13 +227,10 @@ You should see an output similar to the following:
 [,bash,subs="attributes+"]
 ----
 Skupper is enabled for namespace "{frontend-namespace}" in interior mode. It is not connected to any other sites. It has no exposed services.
-The site console url is:  https://skupper-user1-patient-front.{openshift-app-host}
+The site console url is:  https://skupper-{frontend-namespace}.{openshift-app-host}
 ----
 6. Copy and paste the console url in a new browser tab.
-7. This is the Skupper console. Click on the *Network* tab to check this site connectivity.
-+
-image:images/200-skupper-console.png[Skupper Console]
-8. Your site {frontend-namespace} should be showing here.
+7. This is the Skupper console. Click on the *Network* tab to check this site connectivity. Your site {frontend-namespace} should be showing here.
 +
 image:images/201-skupper-site-frontend.png[Skupper Sites]
 
@@ -298,12 +301,13 @@ metadata:
     edge-port: "443"
     inter-router-host: skupper-inter-router-{frontend-namespace}.{openshift-app-host}
     inter-router-port: "443"
-    skupper.io/generated-by: 6b973f04-4125-49a9-84f3-f8d03a1ff843
+    skupper.io/generated-by: 5e6c65d6-9a5e-40b5-96c2-34983ed77afb
+    skupper.io/site-version: 1.3.0
   creationTimestamp: null
   labels:
     skupper.io/type: connection-token
   name: skupper
-type: kubernetes.io/tls
+type: kubernetes.io/tls  
 ----
 +
 4. Save the content of this file into a file in your local computer. We will be using this in the future.
