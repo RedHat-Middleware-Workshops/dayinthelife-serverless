@@ -178,7 +178,7 @@ oc set env deployment/patient-portal-frontend DATABASE_SERVICE_HOST=database
 +
 [source,bash,subs="attributes+"]
 ----
-skupper init --enable-console --enable-flow-collector --console-auth unsecured --site-name aws
+skupper init --enable-console --enable-flow-collector --console-auth unsecured
 ----
 +
 {blank}
@@ -358,7 +358,7 @@ Were you able to create the namespace?
 
 1. Open a new browser tab to access the developer view of the link:{azure-console}/topology/ns/{backend-namespace}[OpenShift console, window="_blank"] running on Azure.
 
-2. Click on the *Container Image* card button.
+2. Click on *+Add* and then in the *Container images* card button.
 +
 image:images/300-console-dashboard.png[Dashboard]
 
@@ -366,7 +366,11 @@ image:images/300-console-dashboard.png[Dashboard]
 +
 image:images/301-create-payment.png[Dashboard]
 
-4. This will start the payment processor in your namespace.
+4. Scroll all the way down and change the _Resource Type_ to *Deployment*. Finally create *Create*.
++
+image:images/301a-payment-resource-type.png[Resource Type]
+
+This will start the payment processor in your namespace.
 
 === Deploy the database
 
@@ -380,7 +384,11 @@ image:images/302-console-add.png[Dashboard]
 +
 image:images/301-create-database.png[Dashboard]
 
-4. You should now be able to see both deployments in the console.
+4. Scroll all the way down and change the _Resource Type_ to *Deployment*. Finally create *Create*.
++
+image:images/301a-database-resource-type.png[Resource Type]
+
+5. You should now be able to see both deployments in the console.
 +
 image:images/303-backend-deployments.png[Dashboard]
 
@@ -499,10 +507,12 @@ You should see an output similar to the following:
 [,bash,subs="attributes+"]
 ----
 Services exposed through Skupper:
-    payment-processor (http port 8080) with targets
-      => app=patient-portal-payment-processor name=patient-portal-payment-processor
-    database (tcp port 5432) with targets
-      => app=patient-portal-database name=patient-portal-database
+├─ database (tcp port 5432)
+│  ╰─ Targets:
+│     ╰─ app=patient-portal-database name=patient-portal-database
+╰─ payment-processor (http port 8080)
+   ╰─ Targets:
+      ╰─ app=patient-portal-payment-processor name=patient-portal-payment-processor
 ----
 
 [type=verification]
